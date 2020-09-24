@@ -19,6 +19,7 @@ export interface IPlayer {
     leftDown: number;
     rightDown: number;
   };
+  canDoubleJump: boolean;
   lastJumpedAt: number;
   speed: {
     run: number;

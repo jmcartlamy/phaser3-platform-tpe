@@ -22,8 +22,8 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   public create() {
-    // Update interactive scene (mixplay)
-    this.game.interactive?.onMenu();
+    // TODO Update interactive scene (mixplay)
+    // this.game.interactive?.onMenu();
 
     // On press to key '1', we start the next scene
     this.input.keyboard.on('keyup_ONE', () => {

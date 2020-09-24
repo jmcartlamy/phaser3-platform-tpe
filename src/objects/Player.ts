@@ -25,7 +25,7 @@ export default class Player {
 
     // Create cursor keys for camera
     this.cursors = this.currentScene.input.keyboard.createCursorKeys();
-    this.smoothedControls = new SmoothedHorizontalControl(0.005);
+    this.smoothedControls = new SmoothedHorizontalControl(0.001);
 
     // Create a collection's bodies to be a compound body.
     this.createCompoundBody();
@@ -149,10 +149,31 @@ export default class Player {
   private processVerticalMovement(time: number) {
     // Add a slight delay between jumps since the collection will still collide
     // for a few frames after a jump is initiated
-    const canJump = time - this.collection.lastJumpedAt > 250;
-    if (this.cursors.up.isDown && canJump && this.collection.blocked.bottom) {
-      this.collection.matterSprite.setVelocityY(-this.collection.speed.jump);
-      this.collection.lastJumpedAt = time;
+    const canJump = time - this.collection.lastJumpedAt > 200;
+    const didPressJump = Phaser.Input.Keyboard.JustDown(this.cursors.up);
+
+    if (didPressJump && canJump) {
+      if (this.collection.blocked.bottom) {
+        // Jump
+        this.collection.matterSprite.setVelocityY(-this.collection.speed.jump);
+        this.collection.lastJumpedAt = time;
+        this.collection.canDoubleJump = true;
+      } else if (this.collection.blocked.left) {
+        // Jump up and away from the wall
+        this.collection.matterSprite.setVelocityY(-this.collection.speed.jump);
+        this.collection.matterSprite.setVelocityX(this.collection.speed.run);
+        this.collection.lastJumpedAt = time;
+      } else if (this.collection.blocked.right) {
+        // Jump up and away from the wall
+        this.collection.matterSprite.setVelocityY(-this.collection.speed.jump);
+        this.collection.matterSprite.setVelocityX(-this.collection.speed.run);
+        this.collection.lastJumpedAt = time;
+      } else if (this.collection.canDoubleJump) {
+        // Double Jump
+        this.collection.matterSprite.setVelocityY(-this.collection.speed.jump);
+        this.collection.canDoubleJump = false;
+        this.collection.lastJumpedAt = time;
+      }
     }
   }
 

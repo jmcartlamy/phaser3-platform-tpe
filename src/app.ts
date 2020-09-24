@@ -20,8 +20,11 @@ const config = {
   physics: {
     default: 'matter',
     matter: {
-      gravity: { y: 0.4 },
-      enableSleep: true
+      gravity: { y: 1 },
+        enableSleep: true,
+        getDelta: function (time: number, delta: number) {
+            return delta;
+        }
     }
   },
   scene: [LoadScene, MenuScene, GameScene, PauseScene]
@@ -30,11 +33,12 @@ const config = {
 class Game extends Phaser.Game {
 
   constructor(config: Phaser.Types.Core.GameConfig) {
-    super(config);
+      super(config);
 
     // TODO use Oauth2 Code Authorization
     // to create a new token or to retrieve an existing valid token with the extension
   }
+    
 }
 
 window.addEventListener('load', async () => {

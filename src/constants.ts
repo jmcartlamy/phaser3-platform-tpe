@@ -46,9 +46,10 @@ export const PLAYER_COLLECTION: IPlayer = {
     leftDown: 0,
     rightDown: 0
   },
+  canDoubleJump: false,
   lastJumpedAt: 0,
   speed: {
-    run: 2,
-    jump: 10
+    run: 2.5,
+    jump: 2.5
   }
 };

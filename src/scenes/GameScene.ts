@@ -39,8 +39,8 @@ export default class GameScene extends Phaser.Scene {
   }
 
   public create() {
-    // Update interactive scene (mixplay)
-    this.game.interactive?.onGame(this);
+    // TODO Update interactive scene
+    // this.game.interactive?.onGame(this);
 
     // Create map following json loaded
     const tilemap = new TileMap(this, 'map');
