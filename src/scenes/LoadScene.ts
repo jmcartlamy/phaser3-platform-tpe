@@ -1,3 +1,5 @@
+import io from 'socket.io-client';
+
 import { GAME_CONFIG, GameScenes } from '../constants';
 import { PhaserGame } from '../types';
 
@@ -20,6 +22,10 @@ export default class LoadScene extends Phaser.Scene {
       font: '16px Courier',
       fill: '#00ff00'
     });
+
+    // Socket IO
+    this.game.socket = io('http://localhost:8081');
+
     const token = null; // TODO getToken();
 
     if (token) {

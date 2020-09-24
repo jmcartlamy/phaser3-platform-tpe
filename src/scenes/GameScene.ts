@@ -12,6 +12,7 @@ import handleBallsCollision from '../objects/events/handleBallsCollision';
 import { GAME_SCREEN_WIDTH, GameScenes } from '../constants';
 import handlePlayerCollision from '../objects/events/handlePlayerCollision';
 import { PhaserGame } from '../types';
+import addBalls from '../helpers/phaser/addBalls';
 
 export default class GameScene extends Phaser.Scene {
   public player: Player;
@@ -87,6 +88,11 @@ export default class GameScene extends Phaser.Scene {
       },
       this
     );
+    
+    // Add balls when we receive an emit from EBS
+    this.game.socket.on('action', (function() {
+      addBalls(this, 200, 200);
+    }).bind(this));
   }
 
   public update(time: number, delta: number) {

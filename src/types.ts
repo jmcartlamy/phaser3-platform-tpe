@@ -1,6 +1,6 @@
-
 export interface PhaserGame extends Phaser.Game {
-  // TODO
+  socket: SocketIOClient.Socket;
+  // TODO interactive
 }
 
 type KeysDirection = 'left' | 'right' | 'bottom';
