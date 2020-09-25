@@ -149,15 +149,18 @@ export default class Player {
   private processVerticalMovement(time: number) {
     // Add a slight delay between jumps since the collection will still collide
     // for a few frames after a jump is initiated
-    const canJump = time - this.collection.lastJumpedAt > 200;
+    const canJump = time - this.collection.lastJumpedAt > 500;
     const didPressJump = Phaser.Input.Keyboard.JustDown(this.cursors.up);
 
-    if (didPressJump && canJump) {
+    if (canJump && !this.collection.canDoubleJump && this.collection.blocked.bottom) {
+      this.collection.canDoubleJump = true;
+    }
+
+    if (didPressJump) {
       if (this.collection.blocked.bottom) {
         // Jump
         this.collection.matterSprite.setVelocityY(-this.collection.speed.jump);
         this.collection.lastJumpedAt = time;
-        this.collection.canDoubleJump = true;
       } else if (this.collection.blocked.left) {
         // Jump up and away from the wall
         this.collection.matterSprite.setVelocityY(-this.collection.speed.jump);
