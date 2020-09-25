@@ -26,3 +26,10 @@ export interface IPlayer {
     jump: number;
   };
 }
+
+export interface PayloadMousedown {
+  clientX: number;
+  clientY: number;
+  clientHeight: number;
+  clientWidth: number;
+}

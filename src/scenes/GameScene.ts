@@ -11,8 +11,9 @@ import addBallsToActivePointer from '../objects/events/addBallsToActivePointer';
 import handleBallsCollision from '../objects/events/handleBallsCollision';
 import { GAME_SCREEN_WIDTH, GameScenes } from '../constants';
 import handlePlayerCollision from '../objects/events/handlePlayerCollision';
-import { PhaserGame } from '../types';
+import { PhaserGame, PayloadMousedown } from '../types';
 import addBalls from '../helpers/phaser/addBalls';
+import translateCoordinatesToScreen from '../helpers/mixplay/translateCoordinatesToScreen';
 
 export default class GameScene extends Phaser.Scene {
   public player: Player;
@@ -88,10 +89,12 @@ export default class GameScene extends Phaser.Scene {
       },
       this
     );
-    
-    // Add balls when we receive an emit from EBS
-    this.game.socket.on('action', (function() {
-      addBalls(this, 200, 200);
+
+    // Add balls when we receive a message on mousedown from EBS
+    this.game.socket.on('mousedown', (function (evt: PayloadMousedown) {
+      const { x, y } = translateCoordinatesToScreen(this, evt);
+      console.log(x, y)
+      addBalls(this, x, y);
     }).bind(this));
   }
 
