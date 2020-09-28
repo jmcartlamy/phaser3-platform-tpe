@@ -26,9 +26,9 @@ export default class LoadScene extends Phaser.Scene {
     // Socket IO
     this.game.socket = io('http://localhost:8081');
 
-    const token = null; // TODO getToken();
+    // const token = null; // TODO getToken();
 
-    if (token) {
+    if (this.game.socket) {
       label.text = 'Create an interactive game session...';
       
       // TODO
@@ -36,6 +36,7 @@ export default class LoadScene extends Phaser.Scene {
       // this.game.interactive.setup(token, this.startMenuScene.bind(this));
 
       this.registry.set('isInteractive', true);
+      this.startMenuScene();
     } else {
       label.text = 'Failed...\n\nLaunch the game without interactive.';
 

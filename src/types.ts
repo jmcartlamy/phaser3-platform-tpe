@@ -27,6 +27,11 @@ export interface IPlayer {
   };
 }
 
+export interface IEnemy {
+  matterSprite: Phaser.Physics.Matter.Sprite | null;
+  body: any;
+}
+
 export interface PayloadMousedown {
   clientX: number;
   clientY: number;

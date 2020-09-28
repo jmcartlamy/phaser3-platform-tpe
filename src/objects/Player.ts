@@ -1,7 +1,7 @@
 import { IPlayer } from '../types';
 import SmoothedHorizontalControl from './helpers/SmoothedHorizontalControl';
 import smoothMoveCameraTowards from './helpers/smoothMoveCameraTowards';
-import { PLAYER_COLLECTION } from '../constants';
+import { Characters, PLAYER_COLLECTION } from '../constants';
 import restartSceneWithDelay from '../scenes/helpers/restartSceneWithDelay';
 
 export default class Player {
@@ -20,7 +20,7 @@ export default class Player {
 
     this.collection = {
       ...PLAYER_COLLECTION,
-      matterSprite: this.currentScene.matter.add.sprite(0, 0, 'player', 4)
+      matterSprite: this.currentScene.matter.add.sprite(0, 0, Characters.Player, 4)
     };
 
     // Create cursor keys for camera
@@ -70,7 +70,7 @@ export default class Player {
 
     this.collection.body = bodies.rectangle(0, 0, width * 0.75, height, {
       chamfer: { radius: 10 },
-      label: 'player'
+      label: Characters.Player
     });
     this.collection.sensors.bottom = bodies.rectangle(0, height * 0.5, width * 0.5, 5, {
       isSensor: true
@@ -102,7 +102,7 @@ export default class Player {
   private animateCompoundBody() {
     this.currentScene.anims.create({
       key: 'left',
-      frames: this.currentScene.anims.generateFrameNumbers('player', {
+      frames: this.currentScene.anims.generateFrameNumbers(Characters.Player, {
         start: 0,
         end: 3
       }),
@@ -111,7 +111,7 @@ export default class Player {
     });
     this.currentScene.anims.create({
       key: 'right',
-      frames: this.currentScene.anims.generateFrameNumbers('player', {
+      frames: this.currentScene.anims.generateFrameNumbers(Characters.Player, {
         start: 5,
         end: 8
       }),
@@ -120,7 +120,7 @@ export default class Player {
     });
     this.currentScene.anims.create({
       key: 'idle',
-      frames: this.currentScene.anims.generateFrameNumbers('player', {
+      frames: this.currentScene.anims.generateFrameNumbers(Characters.Player, {
         start: 4,
         end: 4
       }),

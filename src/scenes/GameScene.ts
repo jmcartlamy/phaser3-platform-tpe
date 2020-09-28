@@ -6,28 +6,36 @@ import tileMaps from '../assets/tilemaps/kenny_platformer_64x64.png';
 
 import TileMap from '../objects/TileMap';
 import Player from '../objects/Player';
+import Enemy from '../objects/Enemy';
 
 import addBallsToActivePointer from '../objects/events/addBallsToActivePointer';
 import handleBallsCollision from '../objects/events/handleBallsCollision';
-import { GAME_SCREEN_WIDTH, GameScenes } from '../constants';
+import { Characters, GAME_SCREEN_WIDTH, GameScenes } from '../constants';
 import handlePlayerCollision from '../objects/events/handlePlayerCollision';
 import { PhaserGame, PayloadMousedown } from '../types';
 import addBalls from '../helpers/phaser/addBalls';
-import translateCoordinatesToScreen from '../helpers/mixplay/translateCoordinatesToScreen';
+import translateCoordinatesToScreen from '../helpers/twitch/translateCoordinatesToScreen';
 
 export default class GameScene extends Phaser.Scene {
   public player: Player;
+  public blob: Enemy[];
   public game: PhaserGame;
 
   constructor() {
     super({
       key: GameScenes.Game
     });
+
+    this.blob = [];
   }
 
   public preload() {
     this.load.spritesheet('balls', balls, { frameWidth: 17, frameHeight: 17 });
-    this.load.spritesheet('player', player, {
+    this.load.spritesheet(Characters.Player, player, {
+      frameWidth: 32,
+      frameHeight: 42
+    });
+    this.load.spritesheet(Characters.Enemy, player, {
       frameWidth: 32,
       frameHeight: 42
     });
@@ -49,6 +57,10 @@ export default class GameScene extends Phaser.Scene {
 
     // Create player and init his position
     this.player = new Player(this, tilemap.map);
+
+    // Create enemy
+    this.blob.push(new Enemy(this, 1050, 300));
+    this.blob.push(new Enemy(this, 1635, 200));
 
     // Drop matter balls on pointer down.
     this.input.on('pointerdown', addBallsToActivePointer(this), this);
@@ -93,9 +105,10 @@ export default class GameScene extends Phaser.Scene {
     // Add balls when we receive a message on mousedown from EBS
     this.game.socket.on('mousedown', (function (evt: PayloadMousedown) {
       const { x, y } = translateCoordinatesToScreen(this, evt);
-      console.log(x, y)
       addBalls(this, x, y);
     }).bind(this));
+
+    // TODO NPC
   }
 
   public update(time: number, delta: number) {

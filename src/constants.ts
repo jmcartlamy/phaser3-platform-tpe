@@ -1,4 +1,4 @@
-import { IGameConfig, IPlayer } from './types';
+import { IGameConfig, IPlayer, IEnemy } from './types';
 
 export const GAME_SCREEN_WIDTH = 1280;
 export const GAME_SCREEN_HEIGHT = 720;
@@ -22,6 +22,11 @@ export enum MixplayScenes {
   Menu = 'menu',
   Game = 'game',
   Pause = 'pause'
+}
+
+export enum Characters {
+  Player = 'player',
+  Enemy = 'Enemy'
 }
 
 export const PLAYER_COLLECTION: IPlayer = {
@@ -52,4 +57,9 @@ export const PLAYER_COLLECTION: IPlayer = {
     run: 2.5,
     jump: 2.5
   }
+};
+
+export const ENEMY_COLLECTION: IEnemy = {
+  matterSprite: null,
+  body: null
 };
