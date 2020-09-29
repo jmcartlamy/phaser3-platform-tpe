@@ -30,6 +30,7 @@ export default class Enemy {
 
   public destroyCompoundBody() {
     // Enemy death
+    clearInterval(this.timer);
     this.collection.matterSprite.destroy();
     this.collection.matterSprite = null;
   }
