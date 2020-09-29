@@ -4,23 +4,30 @@ import { ENEMY_COLLECTION, Characters } from '../constants';
 
 export default class Enemy {
   private readonly currentScene: Phaser.Scene;
-  private readonly x: number;
-  private readonly y: number;
+  public timer: NodeJS.Timeout
 
   public collection: IEnemy;
 
-  constructor(scene: Phaser.Scene, x: number, y: number) {
+  constructor(scene: Phaser.Scene, x: number, y: number, direction: 'left' | 'right') {
     this.currentScene = scene;
-    this.x = x;
-    this.y = y;
-
     this.collection = {
       ...ENEMY_COLLECTION,
-      matterSprite: this.currentScene.matter.add.sprite(0, 0, Characters.Enemy, 1)
+      matterSprite: this.currentScene.matter.add.sprite(0, 0, Characters.Enemy, direction === 'left' ? 1 : 8)
     };
 
     // Create a collection's bodies to be a compound body.
-    this.createCompoundBody();
+    this.createCompoundBody(x, y);
+
+    this.timer = setInterval(() => {
+      const frame = Phaser.Math.RND.integerInRange(0, 5);
+      const velocityX = Phaser.Math.RND.integerInRange(1, 3);
+      const velocityY = Phaser.Math.RND.integerInRange(1, 3);
+      const positionX = direction === 'left' ? this.collection.matterSprite.body.position.x - 20 : this.collection.matterSprite.body.position.x + 20
+      scene.matter.add.image(positionX, this.collection.matterSprite.body.position.y - 20, 'balls', frame, {
+        restitution: 1,
+        label: 'ball'
+      }).setVelocity(direction === 'left' ? -velocityX : velocityX, -velocityY);
+    }, 500)
   }
 
   public update(time: number, delta: number) {
@@ -35,7 +42,7 @@ export default class Enemy {
     this.collection.matterSprite = null;
   }
 
-  private createCompoundBody() {
+  private createCompoundBody(x: number, y: number) {
     const width = this.collection.matterSprite.width;
     const height = this.collection.matterSprite.height;
     let bodies: any = this.currentScene.matter.bodies;
@@ -56,6 +63,6 @@ export default class Enemy {
     this.collection.matterSprite.setExistingBody(compoundBody);
     this.collection.matterSprite
       .setFixedRotation() // Sets max inertia to prevent rotation
-      .setPosition(this.x, this.y);
+      .setPosition(x, y);
   }
 }

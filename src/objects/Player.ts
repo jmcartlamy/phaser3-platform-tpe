@@ -96,7 +96,7 @@ export default class Player {
     this.collection.matterSprite.setExistingBody(compoundBody);
     this.collection.matterSprite
       .setFixedRotation() // Sets max inertia to prevent rotation
-      .setPosition(350, 500);
+      .setPosition(1630, 400);
   }
 
   private animateCompoundBody() {

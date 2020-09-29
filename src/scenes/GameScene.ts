@@ -25,7 +25,6 @@ export default class GameScene extends Phaser.Scene {
     super({
       key: GameScenes.Game
     });
-
     this.blob = [];
   }
 
@@ -59,8 +58,8 @@ export default class GameScene extends Phaser.Scene {
     this.player = new Player(this, tilemap.map);
 
     // Create enemy
-    this.blob.push(new Enemy(this, 1050, 300));
-    this.blob.push(new Enemy(this, 1635, 200));
+    this.blob.push(new Enemy(this, 1050, 300, 'left'));
+    this.blob.push(new Enemy(this, 1645, 180, 'right'));
 
     // Drop matter balls on pointer down.
     this.input.on('pointerdown', addBallsToActivePointer(this), this);

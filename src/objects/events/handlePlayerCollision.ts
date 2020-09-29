@@ -27,7 +27,8 @@ export default function(scene: GameScene) {
       if (bodyB.label === Characters.Enemy && bodyA.label === Characters.Player) {
         scene.blob.forEach(function (b) {
           if (b.collection.body.id === bodyB.id) {
-            b.destroyCompoundBody()
+            clearInterval(b.timer);
+            b.destroyCompoundBody();
           }
         });
         return;
