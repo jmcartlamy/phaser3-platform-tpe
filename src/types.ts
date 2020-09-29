@@ -32,9 +32,19 @@ export interface IEnemy {
   body: any;
 }
 
+export interface IEnemyPosition {
+  x: number;
+  y: number;
+  direction: 'left' | 'right'
+}
+
 export interface PayloadMousedown {
   clientX: number;
   clientY: number;
   clientHeight: number;
   clientWidth: number;
+}
+
+export interface PayloadAction {
+  id: string;
 }

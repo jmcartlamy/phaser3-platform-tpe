@@ -10,9 +10,9 @@ import Enemy from '../objects/Enemy';
 
 import addBallsToActivePointer from '../objects/events/addBallsToActivePointer';
 import handleBallsCollision from '../objects/events/handleBallsCollision';
-import { Characters, GAME_SCREEN_WIDTH, GameScenes } from '../constants';
+import { Characters, GAME_SCREEN_WIDTH, GameScenes, ENEMY_AVAILABLE_POSITION } from '../constants';
 import handlePlayerCollision from '../objects/events/handlePlayerCollision';
-import { PhaserGame, PayloadMousedown } from '../types';
+import { PhaserGame, PayloadMousedown, PayloadAction } from '../types';
 import addBalls from '../helpers/phaser/addBalls';
 import translateCoordinatesToScreen from '../helpers/twitch/translateCoordinatesToScreen';
 
@@ -56,10 +56,6 @@ export default class GameScene extends Phaser.Scene {
 
     // Create player and init his position
     this.player = new Player(this, tilemap.map);
-
-    // Create enemy
-    this.blob.push(new Enemy(this, 1050, 300, 'left'));
-    this.blob.push(new Enemy(this, 1645, 180, 'right'));
 
     // Drop matter balls on pointer down.
     this.input.on('pointerdown', addBallsToActivePointer(this), this);
@@ -107,7 +103,11 @@ export default class GameScene extends Phaser.Scene {
       addBalls(this, x, y);
     }).bind(this));
 
-    // TODO NPC
+    // Add NPC when we receive a message on action from EBS
+    this.game.socket.on('action', (function (evt: PayloadAction) {
+      const position = ENEMY_AVAILABLE_POSITION[Phaser.Math.RND.integerInRange(1, 10)];
+      this.blob.push(new Enemy(this, position.x, position.y, position.direction));
+    }).bind(this));
   }
 
   public update(time: number, delta: number) {

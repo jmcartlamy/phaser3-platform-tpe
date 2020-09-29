@@ -3,9 +3,10 @@ import SmoothedHorizontalControl from './helpers/SmoothedHorizontalControl';
 import smoothMoveCameraTowards from './helpers/smoothMoveCameraTowards';
 import { Characters, PLAYER_COLLECTION } from '../constants';
 import restartSceneWithDelay from '../scenes/helpers/restartSceneWithDelay';
+import GameScene from '../scenes/GameScene';
 
 export default class Player {
-  private readonly currentScene: Phaser.Scene;
+  private readonly currentScene: GameScene;
   private currentMap: Phaser.Tilemaps.Tilemap;
 
   public collection: IPlayer;
@@ -13,7 +14,7 @@ export default class Player {
   private smoothedControls: SmoothedHorizontalControl;
   private readonly camera: Phaser.Cameras.Scene2D.Camera;
 
-  constructor(scene: Phaser.Scene, map: Phaser.Tilemaps.Tilemap) {
+  constructor(scene: GameScene, map: Phaser.Tilemaps.Tilemap) {
     this.currentScene = scene;
     this.currentMap = map;
     this.camera = this.currentScene.cameras.main;
@@ -96,7 +97,7 @@ export default class Player {
     this.collection.matterSprite.setExistingBody(compoundBody);
     this.collection.matterSprite
       .setFixedRotation() // Sets max inertia to prevent rotation
-      .setPosition(1630, 400);
+      .setPosition(350, 500);
   }
 
   private animateCompoundBody() {
