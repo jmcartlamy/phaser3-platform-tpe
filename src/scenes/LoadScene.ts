@@ -1,4 +1,5 @@
 import io from 'socket.io-client';
+import axios from 'axios';
 
 import { GAME_CONFIG, GameScenes } from '../constants';
 import { PhaserGame } from '../types';
@@ -30,13 +31,19 @@ export default class LoadScene extends Phaser.Scene {
 
     if (this.game.socket) {
       label.text = 'Create an interactive game session...';
-      
-      // TODO
-      // this.game.interactive = new Interactive();
-      // this.game.interactive.setup(token, this.startMenuScene.bind(this));
 
-      this.registry.set('isInteractive', true);
-      this.startMenuScene();
+      try {
+        // TODO create input with form
+        const { data: { channelId }, status } = await axios({
+          method: 'GET',
+          url: location.protocol + '//localhost:8081/api/channels/search/jihem_',
+        });
+        this.registry.set('isInteractive', true);
+        this.registry.set('channelId', channelId);
+        this.startMenuScene();
+      } catch (err) {
+        console.log(err);
+      }
     } else {
       label.text = 'Failed...\n\nLaunch the game without interactive.';
 

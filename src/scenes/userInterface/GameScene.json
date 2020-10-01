@@ -1,0 +1,22 @@
+{
+    "id": "2",
+    "overlay": {
+      "mousedown": true
+    },
+    "panel": {
+      "title": "Actions",
+      "actions": {
+        "buttons": {
+          "action-npc-1": {
+            "label": "Create an NPC",
+            "cooldown": 10000,
+            "order": 2
+          },
+          "action-npc-2": {
+            "label": "Create an NPC",
+            "cooldown": 10000
+          }
+        }
+      }
+    }
+}

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import balls from '../assets/sprites/balls.png';
 import settings from '../assets/sprites/settings.png';
 import player from '../assets/sprites/player.png';
@@ -15,6 +17,7 @@ import handlePlayerCollision from '../objects/events/handlePlayerCollision';
 import { PhaserGame, PayloadMousedown, PayloadAction } from '../types';
 import addBalls from '../helpers/phaser/addBalls';
 import translateCoordinatesToScreen from '../helpers/twitch/translateCoordinatesToScreen';
+import userInterface from './userInterface/GameScene.json';
 
 export default class GameScene extends Phaser.Scene {
   public player: Player;
@@ -50,6 +53,18 @@ export default class GameScene extends Phaser.Scene {
   public create() {
     // TODO Update interactive scene
     // this.game.interactive?.onGame(this);
+    try {
+      axios({
+        method: 'POST',
+        url: location.protocol + '//localhost:8081/api/viewer/interface',
+        data: {
+          channelId: this.registry.get('channelId'),
+          userInterface: JSON.stringify(userInterface)
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
 
     // Create map following json loaded
     const tilemap = new TileMap(this, 'map');

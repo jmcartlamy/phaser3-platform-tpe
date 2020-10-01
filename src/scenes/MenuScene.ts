@@ -2,6 +2,8 @@ import settings from '../assets/sprites/settings.png';
 
 import { GameScenes } from '../constants';
 import { PhaserGame } from '../types';
+import userInterface from './userInterface/LoadScene.json';
+import axios from 'axios';
 
 export default class MenuScene extends Phaser.Scene {
   public game: PhaserGame;
@@ -22,6 +24,22 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   public create() {
+    
+    // TODO create interactive scene
+
+    try {
+      axios({
+        method: 'POST',
+        url: location.protocol + '//localhost:8081/api/viewer/interface',
+        data: {
+          channelId: this.registry.get('channelId'),
+          userInterface: JSON.stringify(userInterface)
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+
     // TODO Update interactive scene (mixplay)
     // this.game.interactive?.onMenu();
 

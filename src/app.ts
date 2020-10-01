@@ -34,7 +34,7 @@ class Game extends Phaser.Game {
 
   constructor(config: Phaser.Types.Core.GameConfig) {
       super(config);
-
+    
     // TODO use Oauth2 Code Authorization
     // to create a new token or to retrieve an existing valid token with the extension
   }
