@@ -14,7 +14,7 @@ import addBallsToActivePointer from '../objects/events/addBallsToActivePointer';
 import handleBallsCollision from '../objects/events/handleBallsCollision';
 import { Characters, GAME_SCREEN_WIDTH, GameScenes, ENEMY_AVAILABLE_POSITION } from '../constants';
 import handlePlayerCollision from '../objects/events/handlePlayerCollision';
-import { PhaserGame, PayloadMousedown, PayloadAction } from '../types';
+import { PhaserGame, PayloadMouseEvent, PayloadAction } from '../types';
 import addBalls from '../helpers/phaser/addBalls';
 import translateCoordinatesToScreen from '../helpers/twitch/translateCoordinatesToScreen';
 import userInterface from './userInterface/GameScene.json';
@@ -56,7 +56,7 @@ export default class GameScene extends Phaser.Scene {
     try {
       axios({
         method: 'POST',
-        url: location.protocol + '//localhost:8081/api/viewer/interface',
+        url: location.protocol + '//localhost:8081/api/user/interface',
         data: {
           channelId: this.registry.get('channelId'),
           userInterface: JSON.stringify(userInterface)
@@ -113,7 +113,7 @@ export default class GameScene extends Phaser.Scene {
     );
 
     // Add balls when we receive a message on mousedown from EBS
-    this.game.socket.on('mousedown', (function (evt: PayloadMousedown) {
+    this.game.socket.on('mouse', (function (evt: PayloadMouseEvent) {
       const { x, y } = translateCoordinatesToScreen(this, evt);
       addBalls(this, x, y);
     }).bind(this));

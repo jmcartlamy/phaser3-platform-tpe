@@ -30,7 +30,7 @@ export default class MenuScene extends Phaser.Scene {
     try {
       axios({
         method: 'POST',
-        url: location.protocol + '//localhost:8081/api/viewer/interface',
+        url: location.protocol + '//localhost:8081/api/user/interface',
         data: {
           channelId: this.registry.get('channelId'),
           userInterface: JSON.stringify(userInterface)

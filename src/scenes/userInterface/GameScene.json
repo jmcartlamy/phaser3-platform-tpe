@@ -1,22 +1,32 @@
 {
-    "id": "2",
-    "overlay": {
-      "mousedown": true
-    },
-    "panel": {
-      "title": "Actions",
-      "actions": {
-        "buttons": {
-          "action-npc-1": {
-            "label": "Create an NPC",
-            "cooldown": 10000,
-            "order": 2
-          },
-          "action-npc-2": {
-            "label": "Create an NPC",
-            "cooldown": 10000
-          }
+  "id": "2",
+  "video_overlay": {
+    "mouse": [
+        {
+            "type": "mousedown",
+            "name": "mousedown",
+            "cooldown": 500
         }
+    ]
+  },
+  "panel": {
+    "components": [
+      {
+        "type": "title",
+        "label": "Actions"
+      },
+      {
+        "type": "button",
+        "name": "action-npc-1",
+        "label": "Create an NPC",
+        "cooldown": 10000
+      },
+      {
+        "type": "button",
+        "name": "action-npc-2",
+        "label": "Create an other NPC 2",
+        "cooldown": 10000
       }
-    }
+    ]
+  }
 }

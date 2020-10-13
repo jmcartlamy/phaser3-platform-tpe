@@ -35,10 +35,12 @@ export interface IEnemy {
 export interface IEnemyPosition {
   x: number;
   y: number;
-  direction: 'left' | 'right'
+  direction: 'left' | 'right';
 }
 
-export interface PayloadMousedown {
+export interface PayloadMouseEvent {
+  id: string;
+  type: string;
   clientX: number;
   clientY: number;
   clientHeight: number;
