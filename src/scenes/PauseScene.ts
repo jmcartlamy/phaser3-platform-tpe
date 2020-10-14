@@ -37,7 +37,9 @@ export default class PauseScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive();
 
-    const labelInteractive = this.registry.get('isInteractive') ? 'Interactive game ✅' : 'Solo game ⚠️';
+    const labelInteractive = this.registry.get('isInteractive')
+      ? 'Interactive game ✅'
+      : 'Solo game ⚠️';
     this.add
       .text(GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT / 2 + 44, labelInteractive, styles)
       .setPadding(48, 16, 48, 16)
@@ -79,6 +81,11 @@ export default class PauseScene extends Phaser.Scene {
         this.scene.stop(GameScenes.Pause);
         this.scene.stop(GameScenes.Game);
         this.scene.start(GameScenes.Menu);
+
+        if (this.game.socket) {
+          this.game.socket.removeListener('mouse');
+          this.game.socket.removeListener('action');
+        }
       },
       this
     );

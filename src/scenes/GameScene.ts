@@ -112,7 +112,7 @@ export default class GameScene extends Phaser.Scene {
       this
     );
 
-    // Add balls when we receive a message on mousedown from EBS
+    // Add balls when we receive a message on mouse event from EBS
     this.game.socket.on('mouse', (function (evt: PayloadMouseEvent) {
       const { x, y } = translateCoordinatesToScreen(this, evt);
       addBalls(this, x, y);

@@ -21,7 +21,7 @@ export default function(currentScene: GameScene, nextScene: string, delay: numbe
   
   // @ts-ignore -> type game is "PhaserGame" from './types.ts'
   if (currentScene.game.socket) {
-    currentScene.game.socket.removeListener('mousedown');
+    currentScene.game.socket.removeListener('mouse');
     currentScene.game.socket.removeListener('action');
   }
 }
