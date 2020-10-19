@@ -28,7 +28,8 @@ export interface IPlayer {
 }
 
 export interface IEnemy {
-  matterSprite: Phaser.Physics.Matter.Sprite | null;
+  sprite: Phaser.GameObjects.Sprite | null;
+  matterContainer: Phaser.GameObjects.Container | null;
   body: any;
 }
 
@@ -49,4 +50,5 @@ export interface PayloadMouseEvent {
 
 export interface PayloadAction {
   id: string;
+  username: string | null;
 }

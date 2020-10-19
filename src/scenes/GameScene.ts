@@ -120,8 +120,8 @@ export default class GameScene extends Phaser.Scene {
 
     // Add NPC when we receive a message on action from EBS
     this.game.socket.on('action', (function (evt: PayloadAction) {
-      const position = ENEMY_AVAILABLE_POSITION[Phaser.Math.RND.integerInRange(1, 10)];
-      this.blob.push(new Enemy(this, position.x, position.y, position.direction));
+        const position = ENEMY_AVAILABLE_POSITION[Phaser.Math.RND.integerInRange(1, 10)];
+        this.blob.push(new Enemy(this, position.x, position.y, position.direction, evt.username));
     }).bind(this));
   }
 

@@ -60,7 +60,8 @@ export const PLAYER_COLLECTION: IPlayer = {
 };
 
 export const ENEMY_COLLECTION: IEnemy = {
-  matterSprite: null,
+  sprite: null,
+  matterContainer: null,
   body: null
 };
 
@@ -74,5 +75,5 @@ export const ENEMY_AVAILABLE_POSITION: IEnemyPosition[] = [
   { x: 1370, y: 180, direction: 'left' },
   { x: 1650, y: 400, direction: 'left' },
   { x: 2205, y: 100, direction: 'right' },
-  { x: 2178, y: 290, direction: 'left' },
-]
+  { x: 2178, y: 290, direction: 'left' }
+];

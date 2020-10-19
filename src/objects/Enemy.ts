@@ -4,26 +4,33 @@ import GameScene from '../scenes/GameScene';
 
 export default class Enemy {
   private readonly currentScene: GameScene;
-  public timer: NodeJS.Timeout
+  public timer: NodeJS.Timeout;
   public collection: IEnemy;
 
-  constructor(scene: GameScene, x: number, y: number, direction: 'left' | 'right') {
+  constructor(
+    scene: GameScene,
+    x: number,
+    y: number,
+    direction: 'left' | 'right',
+    username: string | null
+  ) {
     this.throwBallInInterval = this.throwBallInInterval.bind(this, direction);
     this.currentScene = scene;
     this.collection = {
       ...ENEMY_COLLECTION,
-      matterSprite: this.currentScene.matter.add.sprite(0, 0, Characters.Enemy, direction === 'left' ? 1 : 8)
+      matterContainer: this.currentScene.add.container(0, 0),
+      sprite: this.currentScene.add.sprite(0, 0, Characters.Enemy, direction === 'left' ? 1 : 8)
     };
 
     // Create a collection's bodies to be a compound body.
-    this.createCompoundBody(x, y);
+    this.createCompoundBody(x, y, username);
 
     // Throw ball with interval
-    this.timer = setInterval(this.throwBallInInterval, 500)
+    this.timer = setInterval(this.throwBallInInterval, 500);
   }
 
   public update(time: number, delta: number) {
-    if (!this.collection.matterSprite) {
+    if (!this.collection.matterContainer) {
       return;
     }
   }
@@ -31,14 +38,30 @@ export default class Enemy {
   public destroyCompoundBody() {
     // Enemy death
     clearInterval(this.timer);
-    this.collection.matterSprite.destroy();
-    this.collection.matterSprite = null;
+    this.collection.matterContainer.destroy();
+    this.collection.matterContainer = null;
   }
 
-  private createCompoundBody(x: number, y: number) {
-    const width = this.collection.matterSprite.width;
-    const height = this.collection.matterSprite.height;
+  private createCompoundBody(x: number, y: number, username: string | null) {
+    // Add text and sprite to container
+    const text = this.currentScene.add
+      .text(0, -45, username || 'Anonyme', {
+        font: '18px Arial',
+        fill: '#00ff00'
+      })
+      .setOrigin(0.5, 0);
+
+    this.collection.matterContainer.add([this.collection.sprite, text]);
+
+    // Enable matter physics
+    const width = this.collection.sprite.width;
+    const height = this.collection.sprite.height;
     let bodies: any = this.currentScene.matter.bodies;
+
+    // @ts-ignore
+    const matterEnabledContainer = this.currentScene.matter.add.gameObject(
+      this.collection.matterContainer
+    );
 
     this.collection.body = bodies.rectangle(0, 0, width * 0.75, height, {
       chamfer: { radius: 10 },
@@ -47,15 +70,14 @@ export default class Enemy {
 
     // @ts-ignore
     const compoundBody = this.currentScene.matter.body.create({
-      parts: [
-        this.collection.body
-      ],
+      parts: [this.collection.body],
       restitution: 0.05 // Prevent body from sticking against a wall
     });
 
-    this.collection.matterSprite.setExistingBody(compoundBody);
-    this.collection.matterSprite
-      .setFixedRotation() // Sets max inertia to prevent rotation
+    matterEnabledContainer
+      // @ts-ignore
+      .setExistingBody(compoundBody)
+      .setFixedRotation()
       .setPosition(x, y);
   }
 
@@ -64,11 +86,16 @@ export default class Enemy {
     const velocityX = Phaser.Math.RND.integerInRange(1, 4);
     const velocityY = Phaser.Math.RND.integerInRange(1, 3);
     // @ts-ignore
-    const positionX = direction === 'left' ? this.collection.matterSprite.body.position.x - 20 : this.collection.matterSprite.body.position.x + 20
+    const positionX =
+      direction === 'left'
+        ? this.collection.matterContainer.body.position.x - 20
+        : this.collection.matterContainer.body.position.x + 20;
     // @ts-ignore
-    this.currentScene.matter.add.image(positionX, this.collection.matterSprite.body.position.y - 20, 'balls', frame, {
-      restitution: 1,
-      label: 'ball'
-    }).setVelocity(direction === 'left' ? -velocityX : velocityX, -velocityY);
+    this.currentScene.matter.add
+      .image(positionX, this.collection.matterContainer.body.position.y - 20, 'balls', frame, {
+        restitution: 1,
+        label: 'ball'
+      })
+      .setVelocity(direction === 'left' ? -velocityX : velocityX, -velocityY);
   }
 }
