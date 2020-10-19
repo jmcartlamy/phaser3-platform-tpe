@@ -1,0 +1,17 @@
+{
+  "id": "1",
+  "panel": {
+    "components": [
+      {
+        "type": "title",
+        "label": "Sur le menu"
+      },
+      {
+        "type": "button",
+        "name": "action-npc-3",
+        "label": "Wow create an NPC 3",
+        "cooldown": 30000
+      }
+    ]
+  }
+}

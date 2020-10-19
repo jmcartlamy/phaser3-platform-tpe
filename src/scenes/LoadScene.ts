@@ -24,30 +24,40 @@ export default class LoadScene extends Phaser.Scene {
       fill: '#00ff00'
     });
 
-    // Socket IO
-    this.game.socket = io('http://localhost:8081');
+    label.text = 'Create an interactive game session...';
 
     // const token = null; // TODO getToken();
 
-    if (this.game.socket) {
-      label.text = 'Create an interactive game session...';
+    try {
+      // TODO create input with form
+      const {
+        data: { channelId },
+        status
+      } = await axios({
+        method: 'GET',
+        url: location.protocol + '//localhost:8081/api/channels/search/jihem_'
+      });
 
-      try {
-        // TODO create input with form
-        const { data: { channelId }, status } = await axios({
-          method: 'GET',
-          url: location.protocol + '//localhost:8081/api/channels/search/jihem_',
-        });
-        this.registry.set('isInteractive', true);
-        this.registry.set('channelId', channelId);
-        this.startMenuScene();
-      } catch (err) {
-        console.log(err);
-      }
+      // Socket IO
+      this.game.socket = io('http://localhost:8081', {
+        query: {
+          channelId
+        }
+      });
+
+      // Set channelId on registry
+      this.registry.set('channelId', channelId);
+    } catch (err) {
+      console.log(err);
+    }
+
+    if (this.game.socket) {
+      this.registry.set('isInteractive', true);
+
+      this.startMenuScene();
     } else {
       label.text = 'Failed...\n\nLaunch the game without interactive.';
-
-      setTimeout(this.startMenuScene.bind(this), 1000);
+      setTimeout(this.startMenuScene.bind(this), 1500);
     }
   }
 

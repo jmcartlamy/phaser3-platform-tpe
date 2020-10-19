@@ -19,13 +19,19 @@
         "type": "button",
         "name": "action-npc-1",
         "label": "Create an NPC",
-        "cooldown": 10000
+        "cooldown": 1000
       },
       {
         "type": "button",
         "name": "action-npc-2",
         "label": "Create an other NPC 2",
-        "cooldown": 10000
+        "cooldown": 8000
+      },
+      {
+        "type": "button",
+        "name": "action-npc-3",
+        "label": "Wow create an NPC 3",
+        "cooldown": 30000
       }
     ]
   }

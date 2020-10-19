@@ -2,7 +2,7 @@ import settings from '../assets/sprites/settings.png';
 
 import { GameScenes } from '../constants';
 import { PhaserGame } from '../types';
-import userInterface from './userInterface/LoadScene.json';
+import userInterface from './userInterface/MenuScene.json';
 import axios from 'axios';
 
 export default class MenuScene extends Phaser.Scene {
