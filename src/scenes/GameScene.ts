@@ -3,7 +3,9 @@ import axios from 'axios';
 import balls from '../assets/sprites/balls.png';
 import settings from '../assets/sprites/settings.png';
 import player from '../assets/sprites/player.png';
-import map from '../assets/tilemaps/tileset-collision-shapes.json';
+//import map from '../assets/tilemaps/tileset-collision-shapes.json';
+import map from '../assets/tilemaps/map1.json';
+
 import tileMaps from '../assets/tilemaps/kenny_platformer_64x64.png';
 
 import TileMap from '../objects/TileMap';
@@ -70,7 +72,7 @@ export default class GameScene extends Phaser.Scene {
     const tilemap = new TileMap(this, 'map');
 
     // Create player and init his position
-    this.player = new Player(this, tilemap.map);
+    this.player = new Player(this, tilemap.map, 200, 200);
 
     // Drop matter balls on pointer down.
     this.input.on('pointerdown', addBallsToActivePointer(this), this);
@@ -112,17 +114,25 @@ export default class GameScene extends Phaser.Scene {
       this
     );
 
-    // Add balls when we receive a message on mouse event from EBS
-    this.game.socket.on('mouse', (function (evt: PayloadMouseEvent) {
-      const { x, y } = translateCoordinatesToScreen(this, evt);
-      addBalls(this, x, y);
-    }).bind(this));
+    if (this.game.socket) {
+      // Add balls when we receive a message on mouse event from EBS
+      this.game.socket.on(
+        'mouse',
+        function(evt: PayloadMouseEvent) {
+          const { x, y } = translateCoordinatesToScreen(this, evt);
+          addBalls(this, x, y);
+        }.bind(this)
+      );
 
-    // Add NPC when we receive a message on action from EBS
-    this.game.socket.on('action', (function (evt: PayloadAction) {
-        const position = ENEMY_AVAILABLE_POSITION[Phaser.Math.RND.integerInRange(1, 10)];
-        this.blob.push(new Enemy(this, position.x, position.y, position.direction, evt.username));
-    }).bind(this));
+      // Add NPC when we receive a message on action from EBS
+      this.game.socket.on(
+        'action',
+        function(evt: PayloadAction) {
+          const position = ENEMY_AVAILABLE_POSITION[Phaser.Math.RND.integerInRange(1, 10)];
+          this.blob.push(new Enemy(this, position.x, position.y, position.direction, evt.username));
+        }.bind(this)
+      );
+    }
   }
 
   public update(time: number, delta: number) {

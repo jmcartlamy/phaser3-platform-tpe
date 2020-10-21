@@ -14,7 +14,12 @@ export default class Player {
   private smoothedControls: SmoothedHorizontalControl;
   private readonly camera: Phaser.Cameras.Scene2D.Camera;
 
-  constructor(scene: GameScene, map: Phaser.Tilemaps.Tilemap) {
+  constructor(
+    scene: GameScene,
+    map: Phaser.Tilemaps.Tilemap,
+    positionX: number,
+    positionY: number
+  ) {
     this.currentScene = scene;
     this.currentMap = map;
     this.camera = this.currentScene.cameras.main;
@@ -29,7 +34,7 @@ export default class Player {
     this.smoothedControls = new SmoothedHorizontalControl(0.001);
 
     // Create a collection's bodies to be a compound body.
-    this.createCompoundBody();
+    this.createCompoundBody(positionX, positionY);
     this.animateCompoundBody();
 
     // Position Camera
@@ -64,7 +69,7 @@ export default class Player {
     restartSceneWithDelay(this.currentScene);
   }
 
-  private createCompoundBody() {
+  private createCompoundBody(positionX: number, positionY: number) {
     const width = this.collection.matterSprite.width;
     const height = this.collection.matterSprite.height;
     let bodies: any = this.currentScene.matter.bodies;
@@ -97,7 +102,7 @@ export default class Player {
     this.collection.matterSprite.setExistingBody(compoundBody);
     this.collection.matterSprite
       .setFixedRotation() // Sets max inertia to prevent rotation
-      .setPosition(350, 500);
+      .setPosition(positionX, positionY);
   }
 
   private animateCompoundBody() {
