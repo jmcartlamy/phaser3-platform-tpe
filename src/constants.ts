@@ -4,7 +4,9 @@ export const GAME_SCREEN_WIDTH = 1280;
 export const GAME_SCREEN_HEIGHT = 720;
 
 export const GAME_CONFIG: IGameConfig = {
-  isInteractive: false
+  isInteractive: false,
+  innerWidth: window.innerWidth,
+  innerHeight: window.innerHeight
 };
 
 export enum GameScenes {

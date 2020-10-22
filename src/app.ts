@@ -13,9 +13,7 @@ const config = {
   height: GAME_SCREEN_HEIGHT,
   backgroundColor: '#000000',
   scale: {
-    mode: Phaser.Scale.FIT,
-    width: GAME_SCREEN_WIDTH,
-    height: GAME_SCREEN_HEIGHT
+    mode: Phaser.Scale.RESIZE,
   },
   physics: {
     default: 'matter',

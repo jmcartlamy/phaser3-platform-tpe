@@ -6,7 +6,9 @@ export interface PhaserGame extends Phaser.Game {
 type KeysDirection = 'left' | 'right' | 'bottom';
 
 export interface IGameConfig {
-  isInteractive: boolean;
+    isInteractive: boolean;
+    innerWidth: number;
+    innerHeight: number;
 }
 
 export interface IPlayer {

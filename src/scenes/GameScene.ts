@@ -14,7 +14,7 @@ import Enemy from '../objects/Enemy';
 
 import addBallsToActivePointer from '../objects/events/addBallsToActivePointer';
 import handleBallsCollision from '../objects/events/handleBallsCollision';
-import { Characters, GAME_SCREEN_WIDTH, GameScenes, ENEMY_AVAILABLE_POSITION } from '../constants';
+import { Characters, GameScenes, ENEMY_AVAILABLE_POSITION } from '../constants';
 import handlePlayerCollision from '../objects/events/handlePlayerCollision';
 import { PhaserGame, PayloadMouseEvent, PayloadAction } from '../types';
 import addBalls from '../helpers/phaser/addBalls';
@@ -100,7 +100,7 @@ export default class GameScene extends Phaser.Scene {
 
     // Create settings button
     const button = this.add
-      .image(GAME_SCREEN_WIDTH - 16, 16, 'settings', 0)
+      .image(this.registry.get('innerWidth') - 16, 16, 'settings', 0)
       .setOrigin(1, 0)
       .setScrollFactor(0)
       .setInteractive();

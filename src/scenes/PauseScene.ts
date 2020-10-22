@@ -1,6 +1,6 @@
 import settings from '../assets/sprites/settings.png';
 
-import { GAME_SCREEN_HEIGHT, GAME_SCREEN_WIDTH, GameScenes } from '../constants';
+import { GameScenes } from '../constants';
 
 export default class PauseScene extends Phaser.Scene {
   constructor() {
@@ -24,15 +24,18 @@ export default class PauseScene extends Phaser.Scene {
       backgroundColor: '#2980b9'
     };
 
+    const innerWidth = this.registry.get('innerWidth');
+    const innerHeight = this.registry.get('innerHeight');
+
     const resumeButton = this.add
-      .text(GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT / 2 - 132, 'Resume', styles)
+      .text(innerWidth / 2, innerHeight / 2 - 132, 'Resume', styles)
       .setPadding(48, 16, 48, 16)
       .setOrigin(0.5)
       .setInteractive();
 
     const labelFS = this.scale.isFullscreen ? 'Disable fullscreen' : 'Enable fullscreen';
     const fullScreenButton = this.add
-      .text(GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT / 2 - 44, labelFS, styles)
+      .text(innerWidth / 2, innerHeight / 2 - 44, labelFS, styles)
       .setPadding(48, 16, 48, 16)
       .setOrigin(0.5)
       .setInteractive();
@@ -41,12 +44,12 @@ export default class PauseScene extends Phaser.Scene {
       ? 'Interactive game ✅'
       : 'Solo game ⚠️';
     this.add
-      .text(GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT / 2 + 44, labelInteractive, styles)
+      .text(innerWidth / 2, innerHeight / 2 + 44, labelInteractive, styles)
       .setPadding(48, 16, 48, 16)
       .setOrigin(0.5);
 
     const exitButton = this.add
-      .text(GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT / 2 + 132, 'Exit', styles)
+      .text(innerWidth / 2, innerHeight / 2 + 132, 'Exit', styles)
       .setPadding(48, 16, 48, 16)
       .setOrigin(0.5)
       .setInteractive();
