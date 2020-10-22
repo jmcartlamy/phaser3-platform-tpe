@@ -93,7 +93,7 @@ export default class Enemy {
     // @ts-ignore
     this.currentScene.matter.add
       .image(positionX, this.collection.matterContainer.body.position.y - 20, 'balls', frame, {
-        restitution: 1,
+        restitution: 0.8,
         label: 'ball'
       })
       .setVelocity(direction === 'left' ? -velocityX : velocityX, -velocityY);

@@ -25,6 +25,8 @@ export default class TileMap {
         tile.physics.matterBody.body.label = 'dangerousTile';
       } else if (tile.properties.type === 'exit') {
         tile.physics.matterBody.body.label = 'exitTile';
+      } else if (tile.properties.fallOnContact) {
+        tile.physics.matterBody.body.label = 'disappearingPlatform';
       }
     });
   }
