@@ -4,7 +4,7 @@ import balls from '../assets/sprites/balls.png';
 import settings from '../assets/sprites/settings.png';
 import player from '../assets/sprites/player.png';
 //import map from '../assets/tilemaps/tileset-collision-shapes.json';
-import map from '../assets/tilemaps/map1.json';
+import map from '../assets/tilemaps/map3.json';
 
 import tileMaps from '../assets/tilemaps/kenny_platformer_64x64.png';
 
@@ -50,6 +50,7 @@ export default class GameScene extends Phaser.Scene {
     // @ts-ignore
     this.load.tilemapTiledJSON('map', map);
     this.load.image('tileMaps', tileMaps);
+    this.load.image('tileMapsNC', tileMaps);
   }
 
   public create() {
@@ -72,7 +73,7 @@ export default class GameScene extends Phaser.Scene {
     const tilemap = new TileMap(this, 'map');
 
     // Create player and init his position
-    this.player = new Player(this, tilemap.map, 200, 200);
+    this.player = new Player(this, tilemap.map, 17020, 2750);
 
     // Drop matter balls on pointer down.
     this.input.on('pointerdown', addBallsToActivePointer(this), this);

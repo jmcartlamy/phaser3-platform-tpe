@@ -1,11 +1,16 @@
 export default class TileMap {
   public map: Phaser.Tilemaps.Tilemap;
 
-  constructor(scene: Phaser.Scene, key: string) {
+    constructor(scene: Phaser.Scene, key: string) {
     this.map = scene.make.tilemap({ key });
-    const tileset = this.map.addTilesetImage('tileMaps');
 
-    const layer = this.map.createDynamicLayer(0, tileset, 0, 0);
+    // Map with collision
+    const tilesetImage = this.map.addTilesetImage('tileMaps');
+    const layer = this.map.createDynamicLayer(1, tilesetImage, 0, 0);
+
+    // Map without collision
+    const tilesetImageNC = this.map.addTilesetImage('tileMapsNC');
+    this.map.createStaticLayer(0, tilesetImageNC, 0, 0);
 
     // Set colliding tiles before converting the layer to Matter bodies!
     layer.setCollisionByProperty({ collides: true });
@@ -21,12 +26,14 @@ export default class TileMap {
 
     // Change label makes easier to check Matter collisions.
     layer.forEachTile(function(tile: any) {
-      if (tile.properties.type === 'lava' || tile.properties.type === 'spike') {
-        tile.physics.matterBody.body.label = 'dangerousTile';
-      } else if (tile.properties.type === 'exit') {
-        tile.physics.matterBody.body.label = 'exitTile';
-      } else if (tile.properties.fallOnContact) {
-        tile.physics.matterBody.body.label = 'disappearingPlatform';
+      if (tile.physics.matterBody) {
+        if (tile.properties.type === 'lava' || tile.properties.type === 'spike') {
+          tile.physics.matterBody.body.label = 'dangerousTile';
+        } else if (tile.properties.type === 'exit') {
+          tile.physics.matterBody.body.label = 'exitTile';
+        } else if (tile.properties.fallOnContact) {
+          tile.physics.matterBody.body.label = 'disappearingPlatform';
+        }
       }
     });
   }
