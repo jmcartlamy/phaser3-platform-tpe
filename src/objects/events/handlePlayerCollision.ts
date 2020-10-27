@@ -19,8 +19,44 @@ export default function(scene: GameScene) {
         }
 
         if (bodyA.parent.label === 'exitTile') {
-          scene.cameras.main.zoomTo(2);
-          changeSceneWithDelay(scene, GameScenes.Menu, 1000);
+          // TODO REFACTO
+          const tile = bodyA.gameObject.tile;
+          if (tile.properties.isShowingScore) {
+            continue;
+          }
+          tile.properties.isShowingScore = true;
+          const { x, y } = scene.cameras.main.midPoint;
+          const styles = {
+            font: '48px Courier',
+            fill: '#ffffff',
+            backgroundColor: '#000000',
+            alpha: 0.7
+          };
+          const score = scene.game.score;
+          const BEST_TIME = 50;
+          const timeScore = Math.trunc(Math.pow(1.05, BEST_TIME - score.time) * 2000);
+          scene.game.score.total += timeScore;
+          const text =
+            'Score' +
+            '\n\nViewer action: ' +
+            score.action.toString() +
+            '\nViewer balls:  ' +
+            score.mouse.toString() +
+            '\nExtra bonus:   ' +
+            score.bonus.toString() +
+            '\nTime bonus:    ' +
+            timeScore.toString() +
+            '\n\nTotal:         ' +
+            score.total.toString() +
+            '\n\nPress 1 to next';
+          scene.add
+            .text(x, y, text, styles)
+            .setPadding(48, 48, 48, 48)
+            .setOrigin(0.5, 0.5);
+
+          scene.input.keyboard.on('keyup_ONE', () => {
+            changeSceneWithDelay(scene, GameScenes.Menu, 0);
+          });
         }
 
         if (bodyA.parent.label === 'disappearingPlatform') {
@@ -38,11 +74,21 @@ export default function(scene: GameScene) {
             targets: tile,
             alpha: { value: 0, duration: 500, ease: 'Power1' },
             onComplete: function(tile: any) {
-              var layer = tile.tilemapLayer;
-              layer.removeTileAt(tile.x, tile.y);
+              tile.tilemapLayer.removeTileAt(tile.x, tile.y);
               tile.physics.matterBody.destroy();
             }.bind(scene, tile)
           });
+        }
+        if (bodyA.parent.label === 'bonusTile') {
+          const tile = bodyA.gameObject.tile;
+          // Set score on variables
+          scene.game.score.bonus += bodyA.parent.value;
+          scene.game.score.total += bodyA.parent.value;
+          // Set score on text
+          scene.textScore.setText('Score: ' + scene.game.score.total.toString());
+          // Remove tile
+          tile.tilemapLayer.removeTileAt(tile.x, tile.y);
+          tile.physics.matterBody.destroy();
         }
       }
 

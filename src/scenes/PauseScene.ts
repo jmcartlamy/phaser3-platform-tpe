@@ -1,6 +1,7 @@
 import settings from '../assets/sprites/settings.png';
 
 import { GameScenes } from '../constants';
+import Enemy from '../objects/Enemy';
 
 export default class PauseScene extends Phaser.Scene {
   constructor() {
@@ -88,6 +89,12 @@ export default class PauseScene extends Phaser.Scene {
         if (this.game.socket) {
           this.game.socket.removeListener('mouse');
           this.game.socket.removeListener('action');
+        }
+        if (this.blob) {
+          this.blob.forEach(function(b: Enemy) {
+            clearInterval(b.timer);
+          });
+          this.blob = [];
         }
       },
       this

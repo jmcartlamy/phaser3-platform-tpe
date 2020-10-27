@@ -1,7 +1,7 @@
 export default class TileMap {
   public map: Phaser.Tilemaps.Tilemap;
 
-    constructor(scene: Phaser.Scene, key: string) {
+  constructor(scene: Phaser.Scene, key: string) {
     this.map = scene.make.tilemap({ key });
 
     // Map with collision
@@ -27,12 +27,28 @@ export default class TileMap {
     // Change label makes easier to check Matter collisions.
     layer.forEachTile(function(tile: any) {
       if (tile.physics.matterBody) {
-        if (tile.properties.type === 'lava' || tile.properties.type === 'spike') {
+        if (
+          tile.properties.type === 'lava' ||
+          tile.properties.type === 'spike' ||
+          tile.properties.type === 'cactus'
+        ) {
           tile.physics.matterBody.body.label = 'dangerousTile';
         } else if (tile.properties.type === 'exit') {
           tile.physics.matterBody.body.label = 'exitTile';
         } else if (tile.properties.fallOnContact) {
           tile.physics.matterBody.body.label = 'disappearingPlatform';
+        } else if (tile.properties.bonus) {
+          tile.physics.matterBody.body.label = 'bonusTile';
+
+          if (tile.properties.type === 'green_bonus') {
+            tile.physics.matterBody.body.value = 100;
+          } else if (tile.properties.type === 'blue_bonus') {
+            tile.physics.matterBody.body.value = 200;
+          } else if (tile.properties.type === 'yellow_bonus') {
+            tile.physics.matterBody.body.value = 300;
+          } else if (tile.properties.type === 'red_bonus') {
+            tile.physics.matterBody.body.value = 400;
+          }
         }
       }
     });

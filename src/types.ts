@@ -1,14 +1,23 @@
 export interface PhaserGame extends Phaser.Game {
   socket: SocketIOClient.Socket;
+  score: Score;
   // TODO interactive
+}
+
+export interface Score {
+    action: number;
+    mouse: number;
+    time: number;
+    bonus: number;
+    total: number;
 }
 
 type KeysDirection = 'left' | 'right' | 'bottom';
 
 export interface IGameConfig {
-    isInteractive: boolean;
-    innerWidth: number;
-    innerHeight: number;
+  isInteractive: boolean;
+  innerWidth: number;
+  innerHeight: number;
 }
 
 export interface IPlayer {

@@ -1,4 +1,4 @@
-import GameScene from "../GameScene";
+import GameScene from '../GameScene';
 
 export default function(currentScene: GameScene, nextScene: string, delay: number = 500) {
   currentScene.time.addEvent({
@@ -13,15 +13,16 @@ export default function(currentScene: GameScene, nextScene: string, delay: numbe
 
   // Reinitialize enemies
   if (currentScene.blob) {
-    currentScene.blob.forEach(function (b) { 
+    currentScene.blob.forEach(function(b) {
       clearInterval(b.timer);
-    })
+    });
     currentScene.blob = [];
   }
-  
+
   // @ts-ignore -> type game is "PhaserGame" from './types.ts'
   if (currentScene.game.socket) {
     currentScene.game.socket.removeListener('mouse');
     currentScene.game.socket.removeListener('action');
+    clearInterval(currentScene.textTimer);
   }
 }

@@ -4,7 +4,7 @@ import balls from '../assets/sprites/balls.png';
 import settings from '../assets/sprites/settings.png';
 import player from '../assets/sprites/player.png';
 //import map from '../assets/tilemaps/tileset-collision-shapes.json';
-import map from '../assets/tilemaps/map3.json';
+import map from '../assets/tilemaps/map1.json';
 
 import tileMaps from '../assets/tilemaps/kenny_platformer_64x64.png';
 
@@ -12,7 +12,7 @@ import TileMap from '../objects/TileMap';
 import Player from '../objects/Player';
 import Enemy from '../objects/Enemy';
 
-import addBallsToActivePointer from '../objects/events/addBallsToActivePointer';
+//import addBallsToActivePointer from '../objects/events/addBallsToActivePointer';
 import handleBallsCollision from '../objects/events/handleBallsCollision';
 import { Characters, GameScenes, ENEMY_AVAILABLE_POSITION } from '../constants';
 import handlePlayerCollision from '../objects/events/handlePlayerCollision';
@@ -25,6 +25,9 @@ export default class GameScene extends Phaser.Scene {
   public player: Player;
   public blob: Enemy[];
   public game: PhaserGame;
+  public textScore: Phaser.GameObjects.Text;
+  public textTime: Phaser.GameObjects.Text;
+  public textTimer: NodeJS.Timeout;
 
   constructor() {
     super({
@@ -54,6 +57,14 @@ export default class GameScene extends Phaser.Scene {
   }
 
   public create() {
+    // Attribute score variables
+    this.game.score = {
+      mouse: 0,
+      action: 0,
+      time: 0,
+      bonus: 0,
+      total: 0
+    };
     // TODO Update interactive scene
     // this.game.interactive?.onGame(this);
     try {
@@ -73,10 +84,10 @@ export default class GameScene extends Phaser.Scene {
     const tilemap = new TileMap(this, 'map');
 
     // Create player and init his position
-    this.player = new Player(this, tilemap.map, 17020, 2750);
+    this.player = new Player(this, tilemap.map, 200, 200);
 
     // Drop matter balls on pointer down.
-    this.input.on('pointerdown', addBallsToActivePointer(this), this);
+    //this.input.on('pointerdown', addBallsToActivePointer(this), this);
 
     // Loop over all the collision pairs that start colliding
     // on each step of the Matter engine.
@@ -115,12 +126,38 @@ export default class GameScene extends Phaser.Scene {
       this
     );
 
+    // Create live score
+    this.textScore = this.add
+      .text(16, 16, 'Score: 0', {
+        font: '22px Arial',
+        fill: '#ffffff'
+      })
+      .setOrigin(0, 0)
+      .setScrollFactor(0);
+    this.textTime = this.add
+      .text(16, 42, 'Time: 0', {
+        font: '22px Arial',
+        fill: '#ffffff'
+      })
+      .setOrigin(0, 0)
+      .setScrollFactor(0);
+
+    this.textTimer = setInterval(() => {
+      if (!this.scene.isPaused()) {
+        this.game.score.time += 1;
+        this.textTime.setText('Time: ' + this.game.score.time.toFixed());
+      }
+    }, 1000);
+
     if (this.game.socket) {
       // Add balls when we receive a message on mouse event from EBS
       this.game.socket.on(
         'mouse',
         function(evt: PayloadMouseEvent) {
           const { x, y } = translateCoordinatesToScreen(this, evt);
+          this.game.score.mouse += 2;
+          this.game.score.total += 2;
+          this.textScore.setText('Score: ' + this.game.score.total.toString());
           addBalls(this, x, y);
         }.bind(this)
       );
@@ -130,6 +167,9 @@ export default class GameScene extends Phaser.Scene {
         'action',
         function(evt: PayloadAction) {
           const position = ENEMY_AVAILABLE_POSITION[Phaser.Math.RND.integerInRange(1, 10)];
+          this.game.score.action += 15;
+          this.game.score.total += 15;
+          this.textScore.setText('Score: ' + this.game.score.total.toString());
           this.blob.push(new Enemy(this, position.x, position.y, position.direction, evt.username));
         }.bind(this)
       );
