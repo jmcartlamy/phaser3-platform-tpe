@@ -4,7 +4,7 @@ import balls from '../assets/sprites/balls.png';
 import settings from '../assets/sprites/settings.png';
 import player from '../assets/sprites/player.png';
 //import map from '../assets/tilemaps/tileset-collision-shapes.json';
-import map from '../assets/tilemaps/map3.json';
+import map from '../assets/tilemaps/map1.json';
 
 import tileMaps from '../assets/tilemaps/kenny_platformer_64x64.png';
 
@@ -14,7 +14,7 @@ import Enemy from '../objects/Enemy';
 
 //import addBallsToActivePointer from '../objects/events/addBallsToActivePointer';
 import handleBallsCollision from '../objects/events/handleBallsCollision';
-import { Characters, GameScenes, ENEMY_AVAILABLE_POSITION } from '../constants';
+import { Characters, GameScenes, ENEMY_AVAILABLE_POSITION_MAP_1 } from '../constants';
 import handlePlayerCollision from '../objects/events/handlePlayerCollision';
 import { PhaserGame, PayloadMouseEvent, PayloadAction } from '../types';
 import addBalls from '../helpers/phaser/addBalls';
@@ -168,7 +168,7 @@ export default class GameScene extends Phaser.Scene {
       this.game.socket.on(
         'action',
         function(evt: PayloadAction) {
-          const position = ENEMY_AVAILABLE_POSITION[Phaser.Math.RND.integerInRange(1, 10)];
+          const position = ENEMY_AVAILABLE_POSITION_MAP_1[Phaser.Math.RND.integerInRange(0, 5)];
           this.game.score.action += 15;
           this.game.score.total += 15;
           this.textScore.setText('Score: ' + this.game.score.total.toString());
