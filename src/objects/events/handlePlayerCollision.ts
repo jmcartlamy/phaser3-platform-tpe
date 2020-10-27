@@ -21,6 +21,9 @@ export default function(scene: GameScene) {
         if (bodyA.parent.label === 'exitTile') {
           // TODO REFACTO
           const tile = bodyA.gameObject.tile;
+          // Freeze timer
+          scene.isLevelFinished = true;
+          // Avoid multiple scoring
           if (tile.properties.isShowingScore) {
             continue;
           }
@@ -32,7 +35,12 @@ export default function(scene: GameScene) {
             backgroundColor: '#000000',
             alpha: 0.7
           };
+          // Freeze player
+          scene.player.collection.matterSprite.setStatic(true);
           const score = scene.game.score;
+          // map 1 -> 50
+          // map 2 -> 175
+          // map 3 -> 145
           const BEST_TIME = 50;
           const timeScore = Math.trunc(Math.pow(1.05, BEST_TIME - score.time) * 2000);
           scene.game.score.total += timeScore;

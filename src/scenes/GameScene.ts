@@ -4,7 +4,7 @@ import balls from '../assets/sprites/balls.png';
 import settings from '../assets/sprites/settings.png';
 import player from '../assets/sprites/player.png';
 //import map from '../assets/tilemaps/tileset-collision-shapes.json';
-import map from '../assets/tilemaps/map1.json';
+import map from '../assets/tilemaps/map3.json';
 
 import tileMaps from '../assets/tilemaps/kenny_platformer_64x64.png';
 
@@ -28,12 +28,14 @@ export default class GameScene extends Phaser.Scene {
   public textScore: Phaser.GameObjects.Text;
   public textTime: Phaser.GameObjects.Text;
   public textTimer: NodeJS.Timeout;
+  public isLevelFinished: boolean;
 
   constructor() {
     super({
       key: GameScenes.Game
     });
     this.blob = [];
+    this.isLevelFinished = false;
   }
 
   public preload() {
@@ -142,8 +144,8 @@ export default class GameScene extends Phaser.Scene {
       .setOrigin(0, 0)
       .setScrollFactor(0);
 
-    this.textTimer = setInterval(() => {
-      if (!this.scene.isPaused()) {
+      this.textTimer = setInterval(() => {
+      if (!this.scene.isPaused() && !this.isLevelFinished) {
         this.game.score.time += 1;
         this.textTime.setText('Time: ' + this.game.score.time.toFixed());
       }
