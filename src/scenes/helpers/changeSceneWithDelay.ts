@@ -23,6 +23,10 @@ export default function(currentScene: GameScene, nextScene: string, delay: numbe
   if (currentScene.game.socket) {
     currentScene.game.socket.removeListener('mouse');
     currentScene.game.socket.removeListener('action');
+  }
+
+  // Clear interval timer
+  if (currentScene.textTimer) {
     clearInterval(currentScene.textTimer);
   }
 }

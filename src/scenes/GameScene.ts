@@ -35,10 +35,11 @@ export default class GameScene extends Phaser.Scene {
       key: GameScenes.Game
     });
     this.blob = [];
-    this.isLevelFinished = false;
   }
 
   public preload() {
+    this.isLevelFinished = false;
+
     this.load.spritesheet('balls', balls, { frameWidth: 17, frameHeight: 17 });
     this.load.spritesheet(Characters.Player, player, {
       frameWidth: 32,
@@ -144,7 +145,8 @@ export default class GameScene extends Phaser.Scene {
       .setOrigin(0, 0)
       .setScrollFactor(0);
 
-      this.textTimer = setInterval(() => {
+    // Timer
+    this.textTimer = setInterval(() => {
       if (!this.scene.isPaused() && !this.isLevelFinished) {
         this.game.score.time += 1;
         this.textTime.setText('Time: ' + this.game.score.time.toFixed());

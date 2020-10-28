@@ -90,11 +90,16 @@ export default class PauseScene extends Phaser.Scene {
           this.game.socket.removeListener('mouse');
           this.game.socket.removeListener('action');
         }
-        if (this.blob) {
-          this.blob.forEach(function(b: Enemy) {
+        
+        const gameScene = this.scene.manager.getScene(GameScenes.Game);
+        if (gameScene.textTimer) {
+          clearInterval(gameScene.textTimer);
+        }
+        if (gameScene.blob) {
+          gameScene.blob.forEach(function(b: Enemy) {
             clearInterval(b.timer);
           });
-          this.blob = [];
+          gameScene.blob = [];
         }
       },
       this
