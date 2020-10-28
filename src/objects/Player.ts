@@ -3,10 +3,10 @@ import SmoothedHorizontalControl from './helpers/SmoothedHorizontalControl';
 import smoothMoveCameraTowards from './helpers/smoothMoveCameraTowards';
 import { Characters, PLAYER_COLLECTION } from '../constants';
 import restartSceneWithDelay from '../scenes/helpers/restartSceneWithDelay';
-import GameScene from '../scenes/GameScene';
+import SceneFactory from '../scenes/SceneFactory';
 
 export default class Player {
-  private readonly currentScene: GameScene;
+  private readonly currentScene: SceneFactory;
   private currentMap: Phaser.Tilemaps.Tilemap;
 
   public collection: IPlayer;
@@ -15,7 +15,7 @@ export default class Player {
   private readonly camera: Phaser.Cameras.Scene2D.Camera;
 
   constructor(
-    scene: GameScene,
+    scene: SceneFactory,
     map: Phaser.Tilemaps.Tilemap,
     positionX: number,
     positionY: number
@@ -40,6 +40,7 @@ export default class Player {
     // Position Camera
     this.camera.setBounds(0, 0, this.currentMap.widthInPixels, this.currentMap.heightInPixels);
     smoothMoveCameraTowards(this.collection.matterSprite, this.camera);
+    this.collection.matterSprite.setSleepThreshold(0);
   }
 
   public update(time: number, delta: number) {

@@ -1,13 +1,19 @@
 import settings from '../assets/sprites/settings.png';
 
-import { GameScenes } from '../constants';
+import { SceneKeys } from '../constants';
 import Enemy from '../objects/Enemy';
 
 export default class PauseScene extends Phaser.Scene {
+  private backgroundSceneKey: string;
+
   constructor() {
     super({
-      key: GameScenes.Pause
+      key: SceneKeys.Pause
     });
+  }
+
+  public init(data: { backgroundSceneKey: string }) {
+    this.backgroundSceneKey = data.backgroundSceneKey;
   }
 
   public preload() {
@@ -58,8 +64,8 @@ export default class PauseScene extends Phaser.Scene {
     resumeButton.on(
       'pointerup',
       function() {
-        this.scene.stop(GameScenes.Pause);
-        this.scene.resume(GameScenes.Game);
+        this.scene.stop(SceneKeys.Pause);
+        this.scene.resume(this.backgroundSceneKey);
         this.game.interactive?.resume();
       },
       this
@@ -82,16 +88,18 @@ export default class PauseScene extends Phaser.Scene {
     exitButton.on(
       'pointerup',
       function() {
-        this.scene.stop(GameScenes.Pause);
-        this.scene.stop(GameScenes.Game);
-        this.scene.start(GameScenes.Menu);
+        const activeScenes = this.scene.manager.getScenes(false);
+        console.log(activeScenes);
+        this.scene.stop(SceneKeys.Pause);
+        this.scene.stop(this.backgroundSceneKey);
+        this.scene.start(SceneKeys.Menu);
 
         if (this.game.socket) {
           this.game.socket.removeListener('mouse');
           this.game.socket.removeListener('action');
         }
-        
-        const gameScene = this.scene.manager.getScene(GameScenes.Game);
+
+        const gameScene = this.scene.manager.getScene(this.backgroundSceneKey);
         if (gameScene.textTimer) {
           clearInterval(gameScene.textTimer);
         }

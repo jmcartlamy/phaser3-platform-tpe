@@ -1,8 +1,9 @@
-import GameScene from '../../scenes/GameScene';
+import SceneFactory from '../../scenes/SceneFactory';
 import changeSceneWithDelay from '../../scenes/helpers/changeSceneWithDelay';
-import { Characters, GameScenes } from '../../constants';
+import { Characters, SceneKeys } from '../../constants';
 
-export default function(scene: GameScene) {
+// TODO TEMP
+export default function(scene: SceneFactory, bestTime: number, nextScene: SceneKeys) {
   return function(event: Phaser.Physics.Matter.Events.CollisionActiveEvent) {
     const left = scene.player.collection.sensors.left;
     const right = scene.player.collection.sensors.right;
@@ -37,12 +38,9 @@ export default function(scene: GameScene) {
           };
           // Freeze player
           scene.player.collection.matterSprite.setStatic(true);
+
           const score = scene.game.score;
-          // map 1 -> 50
-          // map 2 -> 175
-          // map 3 -> 145
-          const BEST_TIME = 50;
-          const timeScore = Math.trunc(Math.pow(1.05, BEST_TIME - score.time) * 2000);
+          const timeScore = Math.trunc(Math.pow(1.05, bestTime - score.time) * 2000);
           scene.game.score.total += timeScore;
           const text =
             'Score' +
@@ -63,7 +61,7 @@ export default function(scene: GameScene) {
             .setOrigin(0.5, 0.5);
 
           scene.input.keyboard.on('keyup_ONE', () => {
-            changeSceneWithDelay(scene, GameScenes.Menu, 0);
+            changeSceneWithDelay(scene, nextScene, 0);
           });
         }
 

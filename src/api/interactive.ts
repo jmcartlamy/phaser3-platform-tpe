@@ -1,7 +1,7 @@
 import { GameClient, IInputEvent, IScreenInput } from '@mixer/interactive-node';
 import translateCoordinatesToScreen from '../helpers/mixplay/translateCoordinatesToScreen';
 import addBalls from '../helpers/phaser/addBalls';
-import { GameScenes, MixplayGroups, MixplayScenes } from '../constants';
+import { SceneKeys, MixplayGroups, MixplayScenes } from '../constants';
 
 class Interactive {
   private session: GameClient;

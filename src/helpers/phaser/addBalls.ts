@@ -3,9 +3,26 @@ export default function(scene: Phaser.Scene, x: number, y: number) {
     const rangeX = x + Phaser.Math.RND.integerInRange(-5, 5);
     const rangeY = y + Phaser.Math.RND.integerInRange(-5, 5);
     const frame = Phaser.Math.RND.integerInRange(0, 5);
-    scene.matter.add.image(rangeX, rangeY, 'balls', frame, {
+    const ball = scene.matter.add.image(rangeX, rangeY, 'balls', frame, {
       restitution: 0.8,
-      label: 'ball'
+        label: 'ball',
     });
+
+    // TODO REFACTO
+    if (!scene.balls) {
+      scene.balls = [];
+    }
+
+    scene.balls.push(ball.body);
+
+    if (scene.balls.length > 200) {
+      const ballBody = scene.balls[0];
+      const b = ballBody.gameObject;
+      scene.matter.world.remove(ballBody, false);
+      if (b) {
+        b.destroy();
+      }
+      scene.balls.shift();
+    }
   }
 }

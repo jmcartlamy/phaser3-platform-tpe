@@ -1,15 +1,35 @@
+import { SceneKeys } from './constants';
+
 export interface PhaserGame extends Phaser.Game {
   socket: SocketIOClient.Socket;
   score: Score;
   // TODO interactive
 }
 
+export interface SceneFactoryParams {
+  key: string;
+  map: {
+    key: string;
+    tilemap: object;
+    bestTime: number;
+    direction: 'right' | 'top';
+    nextMap: SceneKeys;
+  };
+  position: {
+    player: IPlayerPosition;
+    enemy: IEnemyPosition[];
+  };
+  user: {
+    interface: object;
+  };
+}
+
 export interface Score {
-    action: number;
-    mouse: number;
-    time: number;
-    bonus: number;
-    total: number;
+  action: number;
+  mouse: number;
+  time: number;
+  bonus: number;
+  total: number;
 }
 
 type KeysDirection = 'left' | 'right' | 'bottom';
@@ -36,6 +56,11 @@ export interface IPlayer {
     run: number;
     jump: number;
   };
+}
+
+export interface IPlayerPosition {
+  x: number;
+  y: number;
 }
 
 export interface IEnemy {

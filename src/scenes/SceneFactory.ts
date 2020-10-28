@@ -3,9 +3,6 @@ import axios from 'axios';
 import balls from '../assets/sprites/balls.png';
 import settings from '../assets/sprites/settings.png';
 import player from '../assets/sprites/player.png';
-//import map from '../assets/tilemaps/tileset-collision-shapes.json';
-import map from '../assets/tilemaps/map1.json';
-
 import tileMaps from '../assets/tilemaps/kenny_platformer_64x64.png';
 
 import TileMap from '../objects/TileMap';
@@ -14,14 +11,14 @@ import Enemy from '../objects/Enemy';
 
 //import addBallsToActivePointer from '../objects/events/addBallsToActivePointer';
 import handleBallsCollision from '../objects/events/handleBallsCollision';
-import { Characters, GameScenes, ENEMY_AVAILABLE_POSITION_MAP_1 } from '../constants';
+import { Characters, SceneKeys } from '../constants';
 import handlePlayerCollision from '../objects/events/handlePlayerCollision';
-import { PhaserGame, PayloadMouseEvent, PayloadAction } from '../types';
+import { PhaserGame, PayloadMouseEvent, PayloadAction, SceneFactoryParams } from '../types';
 import addBalls from '../helpers/phaser/addBalls';
 import translateCoordinatesToScreen from '../helpers/twitch/translateCoordinatesToScreen';
-import userInterface from './userInterface/GameScene.json';
+import dispatchEnemyPosition from './helpers/dispatchEnemyPosition';
 
-export default class GameScene extends Phaser.Scene {
+export default class SceneFactory extends Phaser.Scene {
   public player: Player;
   public blob: Enemy[];
   public game: PhaserGame;
@@ -29,12 +26,14 @@ export default class GameScene extends Phaser.Scene {
   public textTime: Phaser.GameObjects.Text;
   public textTimer: NodeJS.Timeout;
   public isLevelFinished: boolean;
+  protected params: SceneFactoryParams;
 
-  constructor() {
+  constructor(params: SceneFactoryParams) {
     super({
-      key: GameScenes.Game
+      key: params.key
     });
     this.blob = [];
+    this.params = params;
   }
 
   public preload() {
@@ -54,13 +53,14 @@ export default class GameScene extends Phaser.Scene {
       frameHeight: 48
     });
     // @ts-ignore
-    this.load.tilemapTiledJSON('map', map);
+    this.load.tilemapTiledJSON(this.params.map.key, this.params.map.tilemap);
     this.load.image('tileMaps', tileMaps);
     this.load.image('tileMapsNC', tileMaps);
   }
 
   public create() {
     // Attribute score variables
+    this.scene.manager.dump();
     this.game.score = {
       mouse: 0,
       action: 0,
@@ -76,7 +76,7 @@ export default class GameScene extends Phaser.Scene {
         url: location.protocol + '//localhost:8081/api/user/interface',
         data: {
           channelId: this.registry.get('channelId'),
-          userInterface: JSON.stringify(userInterface)
+          userInterface: JSON.stringify(this.params.user.interface)
         }
       });
     } catch (err) {
@@ -84,10 +84,15 @@ export default class GameScene extends Phaser.Scene {
     }
 
     // Create map following json loaded
-    const tilemap = new TileMap(this, 'map');
+    const tilemap = new TileMap(this, this.params.map.key);
 
     // Create player and init his position
-    this.player = new Player(this, tilemap.map, 200, 200);
+    this.player = new Player(
+      this,
+      tilemap.map,
+      this.params.position.player.x,
+      this.params.position.player.y
+    );
 
     // Drop matter balls on pointer down.
     //this.input.on('pointerdown', addBallsToActivePointer(this), this);
@@ -104,7 +109,10 @@ export default class GameScene extends Phaser.Scene {
     });
 
     // Loop over the active colliding pairs and count the surfaces the player is touching.
-    this.matter.world.on('collisionactive', handlePlayerCollision(this));
+    this.matter.world.on(
+      'collisionactive',
+      handlePlayerCollision(this, this.params.map.bestTime, this.params.map.nextMap)
+    );
 
     // Update over, so now we can determine if any direction is blocked
     this.matter.world.on('afterupdate', () => {
@@ -122,8 +130,8 @@ export default class GameScene extends Phaser.Scene {
     button.on(
       'pointerup',
       function() {
-        this.scene.launch(GameScenes.Pause);
-        this.scene.pause(GameScenes.Game);
+        this.scene.launch(SceneKeys.Pause, { backgroundSceneKey: this.params.key });
+        this.scene.pause(this.params.key);
         this.game.interactive?.pause();
       },
       this
@@ -170,7 +178,11 @@ export default class GameScene extends Phaser.Scene {
       this.game.socket.on(
         'action',
         function(evt: PayloadAction) {
-          const position = ENEMY_AVAILABLE_POSITION_MAP_1[Phaser.Math.RND.integerInRange(0, 5)];
+          const position = dispatchEnemyPosition(
+            this.params.position.enemy,
+            this.player.collection.body.position,
+            this.params.map.direction
+          );
           this.game.score.action += 15;
           this.game.score.total += 15;
           this.textScore.setText('Score: ' + this.game.score.total.toString());

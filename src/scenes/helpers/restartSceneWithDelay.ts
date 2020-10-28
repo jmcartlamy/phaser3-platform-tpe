@@ -1,6 +1,6 @@
-import GameScene from '../GameScene';
+import SceneFactory from '../SceneFactory';
 
-export default function(currentScene: GameScene, delay: number = 500) {
+export default function(currentScene: SceneFactory, delay: number = 500) {
   currentScene.time.addEvent({
     delay: delay,
     callback: () => {

@@ -1,14 +1,14 @@
 import { IEnemy } from '../types';
 import { ENEMY_COLLECTION, Characters } from '../constants';
-import GameScene from '../scenes/GameScene';
+import SceneFactory from '../scenes/SceneFactory';
 
 export default class Enemy {
-  private readonly currentScene: GameScene;
+  private readonly currentScene: SceneFactory;
   public timer: NodeJS.Timeout;
   public collection: IEnemy;
 
   constructor(
-    scene: GameScene,
+    scene: SceneFactory,
     x: number,
     y: number,
     direction: 'left' | 'right',
@@ -91,11 +91,29 @@ export default class Enemy {
         ? this.collection.matterContainer.body.position.x - 20
         : this.collection.matterContainer.body.position.x + 20;
     // @ts-ignore
-    this.currentScene.matter.add
+    const ball = this.currentScene.matter.add
       .image(positionX, this.collection.matterContainer.body.position.y - 20, 'balls', frame, {
         restitution: 0.8,
-        label: 'ball'
+        label: 'ball',
+        density: 0.001,
+        frictionAir: 0
       })
       .setVelocity(direction === 'left' ? -velocityX : velocityX, -velocityY);
+
+    // TODO REFACTO
+    if (!this.currentScene.balls) {
+      this.currentScene.balls = [];
+    }
+
+    this.currentScene.balls.push(ball.body);
+    if (this.currentScene.balls.length > 200) {
+      const ballBody = this.currentScene.balls[0];
+      const b = ballBody.gameObject;
+      this.currentScene.matter.world.remove(ballBody, false);
+      if (b) {
+        b.destroy();
+      }
+      this.currentScene.balls.shift();
+    }
   }
 }

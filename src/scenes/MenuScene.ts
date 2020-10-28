@@ -1,6 +1,6 @@
 import settings from '../assets/sprites/settings.png';
 
-import { GameScenes } from '../constants';
+import { SceneKeys } from '../constants';
 import { PhaserGame } from '../types';
 import userInterface from './userInterface/MenuScene.json';
 import axios from 'axios';
@@ -10,7 +10,7 @@ export default class MenuScene extends Phaser.Scene {
 
   constructor() {
     super({
-      key: GameScenes.Menu
+      key: SceneKeys.Menu
     });
   }
 
@@ -45,7 +45,7 @@ export default class MenuScene extends Phaser.Scene {
 
     // On press to key '1', we start the next scene
     this.input.keyboard.on('keyup_ONE', () => {
-      this.scene.start(GameScenes.Game);
+      this.scene.start(SceneKeys.Map1);
     });
   }
 }

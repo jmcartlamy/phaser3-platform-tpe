@@ -4,7 +4,7 @@
   "description": "A Phaser 3 Platform Game with Twitch plays experience",
   "private": true,
   "scripts": {
-    "build": "webpack --config webpack.prod.js",
+    "build": "webpack-dev-server --config webpack.prod.js",
     "start": "webpack-dev-server --config webpack.config.js"
   },
   "prettier": {

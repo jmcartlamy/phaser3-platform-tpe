@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import axios from 'axios';
 
-import { GAME_CONFIG, GameScenes } from '../constants';
+import { GAME_CONFIG, SceneKeys } from '../constants';
 import { PhaserGame } from '../types';
 
 export default class LoadScene extends Phaser.Scene {
@@ -9,7 +9,7 @@ export default class LoadScene extends Phaser.Scene {
 
   constructor() {
     super({
-      key: GameScenes.Load
+      key: SceneKeys.Load
     });
   }
 
@@ -62,6 +62,6 @@ export default class LoadScene extends Phaser.Scene {
   }
 
   private startMenuScene() {
-    this.scene.start(GameScenes.Menu);
+    this.scene.start(SceneKeys.Menu);
   }
 }
