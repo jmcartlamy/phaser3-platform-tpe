@@ -4,13 +4,15 @@
     "components": [
       {
         "type": "title",
-        "label": "Sur le menu"
-      },
+        "label": "Bienvenue sur l'extension : aucune intéraction possible sur le menu"
+      }
+    ]
+  },
+  "video_overlay": {
+    "components": [
       {
-        "type": "button",
-        "name": "action-npc-3",
-        "label": "Wow create an NPC 3",
-        "cooldown": 30000
+        "type": "title",
+        "label": "Bienvenue sur l'extension : aucune intéraction possible sur le menu"
       }
     ]
   }

@@ -1,0 +1,43 @@
+{
+  "id": "2",
+  "video_overlay": {
+    "components": [
+      {
+        "type": "title",
+        "label": "Intéractivité activé sur les boutons :"
+      },
+      {
+        "type": "button",
+        "name": "action-npc-1",
+        "label": "Créer un ennemi",
+        "cooldown": 5000
+      },
+      {
+        "type": "button",
+        "name": "action-npc-2",
+        "label": "Créer un autre ennemi",
+        "cooldown": 20000
+      }
+    ]
+  },
+  "panel": {
+    "components": [
+      {
+        "type": "title",
+        "label": "Intéractivité activé sur les boutons"
+      },
+      {
+        "type": "button",
+        "name": "action-npc-1",
+        "label": "Créer un ennemi",
+        "cooldown": 5000
+      },
+      {
+        "type": "button",
+        "name": "action-npc-2",
+        "label": "Créer un autre ennemi",
+        "cooldown": 2000
+      }
+    ]
+  }
+}
