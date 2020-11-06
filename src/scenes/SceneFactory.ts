@@ -60,7 +60,6 @@ export default class SceneFactory extends Phaser.Scene {
 
   public create() {
     // Attribute score variables
-    this.scene.manager.dump();
     this.game.score = {
       mouse: 0,
       action: 0,
@@ -70,10 +69,17 @@ export default class SceneFactory extends Phaser.Scene {
     };
     // TODO Update interactive scene
     // this.game.interactive?.onGame(this);
+    const protocol = process.env.NODE_ENV === 'production' ? 'https:' : 'http:';
+    const host =
+      process.env.NODE_ENV === 'production'
+        ? '//interactive-sync-ebs.azurewebsites.net/'
+        : '//localhost:8081/';
+    const path = 'api/user/interface';
+
     try {
       axios({
         method: 'POST',
-        url: location.protocol + '//localhost:8081/api/user/interface',
+        url: protocol + host + path,
         data: {
           channelId: this.registry.get('channelId'),
           userInterface: JSON.stringify(this.params.user.interface)

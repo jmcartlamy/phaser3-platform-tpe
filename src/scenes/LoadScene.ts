@@ -27,6 +27,12 @@ export default class LoadScene extends Phaser.Scene {
     label.text = 'Create an interactive game session...';
 
     // const token = null; // TODO getToken();
+    const protocol = process.env.NODE_ENV === 'production' ? 'https:' : 'http:';
+    const host =
+      process.env.NODE_ENV === 'production'
+        ? '//interactive-sync-ebs.azurewebsites.net/'
+        : '//localhost:8081/';
+    const path = 'api/channels/search/jihem_';
 
     try {
       // TODO create input with form
@@ -35,11 +41,11 @@ export default class LoadScene extends Phaser.Scene {
         status
       } = await axios({
         method: 'GET',
-        url: location.protocol + '//localhost:8081/api/channels/search/jihem_'
+        url: protocol + host + path
       });
 
       // Socket IO
-      this.game.socket = io('http://localhost:8081', {
+      this.game.socket = io(protocol + host, {
         query: {
           channelId
         }

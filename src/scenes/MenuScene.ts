@@ -24,13 +24,18 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   public create() {
-    
     // TODO create interactive scene
+    const protocol = process.env.NODE_ENV === 'production' ? 'https:' : 'http:';
+    const host =
+      process.env.NODE_ENV === 'production'
+        ? '//interactive-sync-ebs.azurewebsites.net/'
+        : '//localhost:8081/';
+    const path = 'api/user/interface';
 
     try {
       axios({
         method: 'POST',
-        url: location.protocol + '//localhost:8081/api/user/interface',
+        url: protocol + host + path,
         data: {
           channelId: this.registry.get('channelId'),
           userInterface: JSON.stringify(userInterface)

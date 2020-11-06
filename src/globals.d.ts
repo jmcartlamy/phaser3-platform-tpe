@@ -12,5 +12,6 @@ declare var process: {
     API_CLIENT_ID: string;
     API_CLIENT_SECRET: string;
     API_VERSION_ID: string;
+    NODE_ENV: 'development' | 'production';
   };
 };
