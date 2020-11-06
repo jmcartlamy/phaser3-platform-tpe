@@ -12,6 +12,10 @@ export default function(
     const index = Phaser.Math.RND.integerInRange(0, max);
     const selected = enemyAvailablePositionMap[index];
 
+    if (enemyAvailablePositionMap[max] === selected) {
+      enemy = selected;
+    }
+
     if (direction === 'top') {
       if (position.y > selected.y && position.y - selected.y < 3000) {
         enemy = selected;
