@@ -12,7 +12,7 @@ export default function(currentScene: SceneFactory, delay: number = 500) {
   // Reinitialize enemies
   if (currentScene.blob) {
     currentScene.blob.forEach(function(b) {
-      clearInterval(b.timer);
+      b.destroyCompoundBody();
     });
     currentScene.blob = [];
   }

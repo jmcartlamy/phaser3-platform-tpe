@@ -5,6 +5,7 @@ import SceneFactory from '../scenes/SceneFactory';
 export default class Enemy {
   private readonly currentScene: SceneFactory;
   public timer: NodeJS.Timeout;
+  public timeout: NodeJS.Timeout;
   public collection: IEnemy;
 
   constructor(
@@ -15,6 +16,7 @@ export default class Enemy {
     username: string | null
   ) {
     this.throwBallInInterval = this.throwBallInInterval.bind(this, direction);
+    this.destroyCompoundBody = this.destroyCompoundBody.bind(this);
     this.currentScene = scene;
     this.collection = {
       ...ENEMY_COLLECTION,
@@ -27,6 +29,9 @@ export default class Enemy {
 
     // Throw ball with interval
     this.timer = setInterval(this.throwBallInInterval, 500);
+
+    // Destroy after 60s
+    this.timeout = setTimeout(this.destroyCompoundBody, 60000);
   }
 
   public update(time: number, delta: number) {
@@ -38,8 +43,11 @@ export default class Enemy {
   public destroyCompoundBody() {
     // Enemy death
     clearInterval(this.timer);
-    this.collection.matterContainer.destroy();
-    this.collection.matterContainer = null;
+    clearTimeout(this.timeout);
+    if (this.collection.matterContainer) {
+      this.collection.matterContainer.destroy();
+      this.collection.matterContainer = null;
+    }
   }
 
   private createCompoundBody(x: number, y: number, username: string | null) {

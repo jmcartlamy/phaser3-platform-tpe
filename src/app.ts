@@ -10,7 +10,7 @@ import Map3Scene from './scenes/Map3Scene';
 import { GAME_SCREEN_HEIGHT, GAME_SCREEN_WIDTH } from './constants';
 
 const config = {
-  type: Phaser.AUTO,
+  type: Phaser.WEBGL,
   width: GAME_SCREEN_WIDTH,
   height: GAME_SCREEN_HEIGHT,
   backgroundColor: '#000000',

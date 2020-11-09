@@ -88,8 +88,6 @@ export default class PauseScene extends Phaser.Scene {
     exitButton.on(
       'pointerup',
       function() {
-        const activeScenes = this.scene.manager.getScenes(false);
-        console.log(activeScenes);
         this.scene.stop(SceneKeys.Pause);
         this.scene.stop(this.backgroundSceneKey);
         this.scene.start(SceneKeys.Menu);
@@ -105,7 +103,7 @@ export default class PauseScene extends Phaser.Scene {
         }
         if (gameScene.blob) {
           gameScene.blob.forEach(function(b: Enemy) {
-            clearInterval(b.timer);
+            b.destroyCompoundBody();
           });
           gameScene.blob = [];
         }
