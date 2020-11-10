@@ -15,7 +15,7 @@ export default function(scene: Phaser.Scene, x: number, y: number) {
 
     scene.balls.push(ball.body);
 
-    if (scene.balls.length > 200) {
+    if (scene.balls.length > 150) {
       const ballBody = scene.balls[0];
       const b = ballBody.gameObject;
       scene.matter.world.remove(ballBody, false);

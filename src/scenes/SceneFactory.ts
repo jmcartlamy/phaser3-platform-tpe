@@ -198,7 +198,7 @@ export default class SceneFactory extends Phaser.Scene {
           this.game.score.action += 15;
           this.game.score.total += 15;
           this.textScore.setText('Score: ' + this.game.score.total.toString());
-          this.blob.push(new Enemy(this, position.x, position.y, position.direction, evt.username));
+          this.blob.push(new Enemy(this, position.x, position.y, position.direction, evt.username, evt.id));
         }.bind(this)
       );
     }

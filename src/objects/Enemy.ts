@@ -13,9 +13,10 @@ export default class Enemy {
     x: number,
     y: number,
     direction: 'left' | 'right',
-    username: string | null
+    username: string | null,
+    id: string
   ) {
-    this.throwBallInInterval = this.throwBallInInterval.bind(this, direction);
+    this.throwBallInInterval = this.throwBallInInterval.bind(this, direction, id);
     this.destroyCompoundBody = this.destroyCompoundBody.bind(this);
     this.currentScene = scene;
     this.collection = {
@@ -89,7 +90,7 @@ export default class Enemy {
       .setPosition(x, y);
   }
 
-  private throwBallInInterval(direction: 'left' | 'right') {
+  private throwBallInInterval(direction: 'left' | 'right', id: string) {
     const frame = Phaser.Math.RND.integerInRange(0, 5);
     const velocityX = Phaser.Math.RND.integerInRange(1, 4);
     const velocityY = Phaser.Math.RND.integerInRange(1, 3);
@@ -108,13 +109,17 @@ export default class Enemy {
       })
       .setVelocity(direction === 'left' ? -velocityX : velocityX, -velocityY);
 
+    if (id === 'action-npc-2') {
+      ball.setScale(2);
+    }
+
     // TODO REFACTO
     if (!this.currentScene.balls) {
       this.currentScene.balls = [];
     }
 
     this.currentScene.balls.push(ball.body);
-    if (this.currentScene.balls.length > 200) {
+    if (this.currentScene.balls.length > 150) {
       const ballBody = this.currentScene.balls[0];
       const b = ballBody.gameObject;
       this.currentScene.matter.world.remove(ballBody, false);
