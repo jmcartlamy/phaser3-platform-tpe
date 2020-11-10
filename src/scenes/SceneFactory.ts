@@ -17,6 +17,7 @@ import { PhaserGame, PayloadMouseEvent, PayloadAction, SceneFactoryParams } from
 import addBalls from '../helpers/phaser/addBalls';
 import translateCoordinatesToScreen from '../helpers/twitch/translateCoordinatesToScreen';
 import dispatchEnemyPosition from './helpers/dispatchEnemyPosition';
+import restartSceneWithDelay from './helpers/restartSceneWithDelay';
 
 export default class SceneFactory extends Phaser.Scene {
   public player: Player;
@@ -166,6 +167,11 @@ export default class SceneFactory extends Phaser.Scene {
         this.textTime.setText('Time: ' + this.game.score.time.toFixed());
       }
     }, 1000);
+
+    // On press to key '1', we restart the scene
+    this.input.keyboard.on('keyup_ONE', () => {
+      restartSceneWithDelay(this, 0);
+    });
 
     if (this.game.socket) {
       // Add balls when we receive a message on mouse event from EBS

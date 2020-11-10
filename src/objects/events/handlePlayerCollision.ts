@@ -61,6 +61,7 @@ export default function(scene: SceneFactory, bestTime: number, nextScene: SceneK
             .setPadding(48, 48, 48, 48)
             .setOrigin(0.5, 0.5);
 
+          scene.input.keyboard.removeListener('keyup_ONE');
           scene.input.keyboard.on('keyup_ONE', () => {
             changeSceneWithDelay(scene, nextScene, 0);
           });
