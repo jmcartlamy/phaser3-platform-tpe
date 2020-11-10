@@ -8,24 +8,30 @@
         "cooldown": 500
       }
     ],
-    "components": [
-      {
-        "type": "title",
-        "label": "Intéractivité activé : cliquez sur la vidéo + bouton :"
-      },
-      {
-        "type": "button",
-        "name": "action-npc-1",
-        "label": "Créer un ennemi",
-        "cooldown": 10000
-      }
-    ]
+    "bottom": {
+      "components": [
+        {
+          "type": "title",
+          "label": "Intéractivité activée sur le stream et le bouton"
+        }
+      ]
+    },
+    "left": {
+      "components": [
+        {
+          "type": "button",
+          "name": "action-npc-1",
+          "label": "Créer un ennemi",
+          "cooldown": 10000
+        }
+      ]
+    }
   },
   "panel": {
     "components": [
       {
         "type": "title",
-        "label": "Intéractivité activé sur le bouton"
+        "label": "Intéractivité activée sur le bouton"
       },
       {
         "type": "button",

@@ -1,6 +1,36 @@
 {
   "id": "2",
   "video_overlay": {
+    "bottom": {
+      "components": [
+        {
+          "type": "title",
+          "label": "Intéractivité activé sur les boutons"
+        }
+      ]
+    },
+    "left": {
+      "components": [
+        {
+          "type": "button",
+          "name": "action-npc-1",
+          "label": "Créer un ennemi",
+          "cooldown": 5000
+        }
+      ]
+    },
+    "right": {
+        "components": [
+          {
+            "type": "button",
+            "name": "action-npc-2",
+            "label": "Créer un super ennemi",
+            "cooldown": 30000
+          }
+        ]
+      }
+  },
+  "panel": {
     "components": [
       {
         "type": "title",
@@ -16,27 +46,7 @@
         "type": "button",
         "name": "action-npc-2",
         "label": "Créer un autre ennemi",
-        "cooldown": 20000
-      }
-    ]
-  },
-  "panel": {
-    "components": [
-      {
-        "type": "title",
-        "label": "Intéractivité activé sur les boutons"
-      },
-      {
-        "type": "button",
-        "name": "action-npc-1",
-        "label": "Créer un ennemi",
-        "cooldown": 5000
-      },
-      {
-        "type": "button",
-        "name": "action-npc-2",
-        "label": "Créer un autre ennemi",
-        "cooldown": 2000
+        "cooldown": 30000
       }
     ]
   }

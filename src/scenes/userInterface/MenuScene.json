@@ -9,11 +9,13 @@
     ]
   },
   "video_overlay": {
-    "components": [
-      {
-        "type": "title",
-        "label": "Bienvenue sur l'extension : aucune intéraction possible sur le menu"
-      }
-    ]
+    "bottom": {
+      "components": [
+        {
+          "type": "title",
+          "label": "Bienvenue sur l'extension : aucune intéraction possible sur le menu"
+        }
+      ]
+    }
   }
 }
