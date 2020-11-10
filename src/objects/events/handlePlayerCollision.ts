@@ -13,15 +13,16 @@ export default function(scene: SceneFactory, bestTime: number, nextScene: SceneK
       const bodyA = event.pairs[i].bodyA;
       const bodyB = event.pairs[i].bodyB;
 
-      if (bodyB.label === Characters.Player) {
-        if (bodyA.parent.label === 'dangerousTile') {
+      if (bodyA.label === Characters.Player || bodyB.label === Characters.Player) {
+        const otherBody = bodyA.label === Characters.Player ? bodyB : bodyA;
+        if (otherBody.parent.label === 'dangerousTile') {
           scene.player.destroyCompoundBody();
           return;
         }
 
-        if (bodyA.parent.label === 'exitTile') {
+        if (otherBody.parent.label === 'exitTile') {
           // TODO REFACTO
-          const tile = bodyA.gameObject.tile;
+          const tile = otherBody.gameObject.tile;
           // Freeze timer
           scene.isLevelFinished = true;
           // Avoid multiple scoring
@@ -65,11 +66,11 @@ export default function(scene: SceneFactory, bestTime: number, nextScene: SceneK
           });
         }
 
-        if (bodyA.parent.label === 'disappearingPlatform') {
+        if (otherBody.parent.label === 'disappearingPlatform') {
           // Matter Body instances have a reference to their associated game object. Here,
           // that's the Phaser.Physics.Matter.TileBody, which has a reference to the
           // Phaser.GameObjects.Tile.
-          const tile = bodyA.gameObject.tile;
+          const tile = otherBody.gameObject.tile;
 
           if (tile.properties.isBeingDestroyed) {
             continue;
@@ -85,11 +86,11 @@ export default function(scene: SceneFactory, bestTime: number, nextScene: SceneK
             }.bind(scene, tile)
           });
         }
-        if (bodyA.parent.label === 'bonusTile') {
-          const tile = bodyA.gameObject.tile;
+        if (otherBody.parent.label === 'bonusTile') {
+          const tile = otherBody.gameObject.tile;
           // Set score on variables
-          scene.game.score.bonus += bodyA.parent.value;
-          scene.game.score.total += bodyA.parent.value;
+          scene.game.score.bonus += otherBody.parent.value;
+          scene.game.score.total += otherBody.parent.value;
           // Set score on text
           scene.textScore.setText('Score: ' + scene.game.score.total.toString());
           // Remove tile
@@ -98,9 +99,13 @@ export default function(scene: SceneFactory, bestTime: number, nextScene: SceneK
         }
       }
 
-      if (bodyB.label === Characters.Enemy && bodyA.label === Characters.Player) {
+      if (
+        (bodyB.label === Characters.Enemy && bodyA.label === Characters.Player) ||
+        (bodyA.label === Characters.Enemy && bodyB.label === Characters.Player)
+      ) {
+        const enemyBody = bodyA.label === Characters.Enemy ? bodyA : bodyB;
         scene.blob.forEach(function(b) {
-          if (b.collection.body.id === bodyB.id) {
+          if (b.collection.body.id === enemyBody.id) {
             b.destroyCompoundBody();
           }
         });
