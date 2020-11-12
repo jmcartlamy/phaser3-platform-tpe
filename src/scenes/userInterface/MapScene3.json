@@ -22,12 +22,14 @@
           "type": "button",
           "name": "action-npc-1",
           "label": "Créer un ennemi",
+          "keyCode": "Digit1",
           "cooldown": 8000
         },
         {
           "type": "button",
           "name": "action-npc-2",
           "label": "Créer un super ennemi",
+          "keyCode": "Digit2",
           "cooldown": 30000
         }
       ]
@@ -43,12 +45,14 @@
         "type": "button",
         "name": "action-npc-1",
         "label": "Créer un ennemi",
+        "keyCode": "Digit1",
         "cooldown": 8000
       },
       {
         "type": "button",
         "name": "action-npc-2",
-        "label": "Créer un autre ennemi",
+        "label": "Créer un super ennemi",
+        "keyCode": "Digit2",
         "cooldown": 30000
       }
     ]

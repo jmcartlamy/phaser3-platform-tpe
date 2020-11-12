@@ -21,6 +21,7 @@
         {
           "type": "button",
           "name": "action-npc-1",
+          "keyCode": "Digit1",
           "label": "Créer un ennemi",
           "cooldown": 10000
         }
@@ -36,6 +37,7 @@
       {
         "type": "button",
         "name": "action-npc-1",
+        "keyCode": "Digit1",
         "label": "Créer un ennemi",
         "cooldown": 10000
       }
