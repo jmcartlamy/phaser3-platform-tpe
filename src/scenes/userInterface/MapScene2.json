@@ -1,5 +1,17 @@
 {
   "id": "3",
+  "mobile": {
+    "title": "Intéractivité activé sur les boutons",
+    "components": [
+        {
+            "type": "button",
+            "name": "action-npc-1",
+            "label": "Créer un ennemi",
+            "keyCode": "Digit1",
+            "cooldown": 5000
+        }
+      ]
+  },
   "video_overlay": {
     "mouse": [
       {
