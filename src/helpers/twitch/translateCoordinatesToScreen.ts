@@ -1,6 +1,6 @@
-import { PayloadMouseEvent } from '../../types';
+import { PayloadMouse } from '../../types';
 
-export default function(scene: Phaser.Scene, evt: PayloadMouseEvent) {
+export default function(scene: Phaser.Scene, evt: PayloadMouse) {
   const innerWidth = scene.registry.get('innerWidth');
   const innerHeight = scene.registry.get('innerHeight');
 

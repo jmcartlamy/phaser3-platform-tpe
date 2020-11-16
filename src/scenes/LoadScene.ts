@@ -1,4 +1,3 @@
-import io from 'socket.io-client';
 import axios from 'axios';
 
 import { GAME_CONFIG, SceneKeys } from '../constants';
@@ -28,6 +27,7 @@ export default class LoadScene extends Phaser.Scene {
 
     // const token = null; // TODO getToken();
     const protocol = process.env.NODE_ENV === 'production' ? 'https:' : 'http:';
+    const protocolWS = process.env.NODE_ENV === 'production' ? 'wss' : 'ws:';
     const host =
       process.env.NODE_ENV === 'production'
         ? '//interactive-sync-ebs.azurewebsites.net/'
@@ -44,11 +44,14 @@ export default class LoadScene extends Phaser.Scene {
         url: protocol + host + path
       });
 
-      // Socket IO
-      this.game.socket = io(protocol + host, {
-        query: {
-          channelId
-        }
+      // WebSocket
+      // @ts-ignore
+      window.WebSocket = window.WebSocket || window.MozWebSocket;
+      this.game.socket = new WebSocket(protocolWS + host);
+      //this.game.socket = new WebSocket('wss:interactive-sync-ebs.azurewebsites.net:443');
+
+      this.game.socket.addEventListener('open', () => {
+        this.game.socket.send(JSON.stringify({ channelId }));
       });
 
       // Set channelId on registry

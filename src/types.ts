@@ -1,7 +1,7 @@
 import { SceneKeys } from './constants';
 
 export interface PhaserGame extends Phaser.Game {
-  socket: SocketIOClient.Socket;
+  socket: WebSocket;
   score: Score;
   // TODO interactive
 }
@@ -75,7 +75,17 @@ export interface IEnemyPosition {
   direction: 'left' | 'right';
 }
 
-export interface PayloadMouseEvent {
+export interface DataMouseEvent {
+  type: 'mouse';
+  payload: PayloadMouse;
+}
+
+export interface DataActionEvent {
+  type: 'action';
+  payload: PayloadAction;
+}
+
+export interface PayloadMouse {
   id: string;
   type: string;
   clientX: number;

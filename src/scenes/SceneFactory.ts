@@ -13,7 +13,7 @@ import Enemy from '../objects/Enemy';
 import handleBallsCollision from '../objects/events/handleBallsCollision';
 import { Characters, SceneKeys } from '../constants';
 import handlePlayerCollision from '../objects/events/handlePlayerCollision';
-import { PhaserGame, PayloadMouseEvent, PayloadAction, SceneFactoryParams } from '../types';
+import { PhaserGame, SceneFactoryParams, DataActionEvent, DataMouseEvent } from '../types';
 import addBalls from '../helpers/phaser/addBalls';
 import translateCoordinatesToScreen from '../helpers/twitch/translateCoordinatesToScreen';
 import dispatchEnemyPosition from './helpers/dispatchEnemyPosition';
@@ -35,6 +35,7 @@ export default class SceneFactory extends Phaser.Scene {
     });
     this.blob = [];
     this.params = params;
+    this.handleMessage = this.handleMessage.bind(this);
   }
 
   public preload() {
@@ -174,32 +175,32 @@ export default class SceneFactory extends Phaser.Scene {
     });
 
     if (this.game.socket) {
-      // Add balls when we receive a message on mouse event from EBS
-      this.game.socket.on(
-        'mouse',
-        function(evt: PayloadMouseEvent) {
-          const { x, y } = translateCoordinatesToScreen(this, evt);
-          this.game.score.mouse += 2;
-          this.game.score.total += 2;
-          this.textScore.setText('Score: ' + this.game.score.total.toString());
-          addBalls(this, x, y);
-        }.bind(this)
-      );
+      // Add balls when we receive a message on action or mouse event from EBS
+      this.game.socket.addEventListener('message', this.handleMessage, true);
+    }
+  }
 
-      // Add NPC when we receive a message on action from EBS
-      this.game.socket.on(
-        'action',
-        function(evt: PayloadAction) {
-          const position = dispatchEnemyPosition(
-            this.params.position.enemy,
-            this.player.collection.body.position,
-            this.params.map.direction
-          );
-          this.game.score.action += 15;
-          this.game.score.total += 15;
-          this.textScore.setText('Score: ' + this.game.score.total.toString());
-          this.blob.push(new Enemy(this, position.x, position.y, position.direction, evt.username, evt.id));
-        }.bind(this)
+  handleMessage(event: { data: string }) {
+    const { type, payload }: DataActionEvent & DataMouseEvent = JSON.parse(event.data);
+
+    if (type === 'mouse') {
+      const { x, y } = translateCoordinatesToScreen(this, payload);
+      this.game.score.mouse += 2;
+      this.game.score.total += 2;
+      this.textScore.setText('Score: ' + this.game.score.total.toString());
+      addBalls(this, x, y);
+    }
+    if (type === 'action') {
+      const position = dispatchEnemyPosition(
+        this.params.position.enemy,
+        this.player.collection.body.position,
+        this.params.map.direction
+      );
+      this.game.score.action += 15;
+      this.game.score.total += 15;
+      this.textScore.setText('Score: ' + this.game.score.total.toString());
+      this.blob.push(
+        new Enemy(this, position.x, position.y, position.direction, payload.username, payload.id)
       );
     }
   }

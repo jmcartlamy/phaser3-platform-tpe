@@ -92,12 +92,11 @@ export default class PauseScene extends Phaser.Scene {
         this.scene.stop(this.backgroundSceneKey);
         this.scene.start(SceneKeys.Menu);
 
+        const gameScene = this.scene.manager.getScene(this.backgroundSceneKey);
         if (this.game.socket) {
-          this.game.socket.removeListener('mouse');
-          this.game.socket.removeListener('action');
+          this.game.socket.removeEventListener('message', gameScene.handleMessage, true);
         }
 
-        const gameScene = this.scene.manager.getScene(this.backgroundSceneKey);
         if (gameScene.textTimer) {
           clearInterval(gameScene.textTimer);
         }
