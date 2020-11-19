@@ -21,7 +21,7 @@ export default function(currentScene: SceneFactory, nextScene: string, delay: nu
 
   // @ts-ignore -> type game is "PhaserGame" from './types.ts'
   if (currentScene.game.socket) {
-    currentScene.game.socket.removeEventListener('message', currentScene.handleMessage, true);
+    currentScene.game.socket.removeEventListener('message', currentScene.handleWebSocketMessage, true);
   }
 
   // Clear interval timer

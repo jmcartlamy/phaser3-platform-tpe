@@ -1,9 +1,13 @@
 import { SceneKeys } from './constants';
 
 export interface PhaserGame extends Phaser.Game {
-  socket: WebSocket;
+  socket: WebSocketExtended;
   score: Score;
   // TODO interactive
+}
+
+export interface WebSocketExtended extends WebSocket {
+  messageConnectionListener?: (event: any) => void;
 }
 
 export interface SceneFactoryParams {
@@ -73,6 +77,31 @@ export interface IEnemyPosition {
   x: number;
   y: number;
   direction: 'left' | 'right';
+}
+
+export interface WebSocketMessageContextConnection {
+  status: 'ok' | 'error';
+  context: 'connection';
+  message: string | null;
+  data: DataConnectionEvent | null;
+}
+
+export interface WebSocketMessageContextMessage {
+  status: 'ok' | 'error';
+  context: 'message';
+  message: string | null;
+  data: null;
+}
+
+export interface WebSocketMessageContextEmit {
+  status: 'ok';
+  context: 'emit';
+  message: null;
+  data: (DataMouseEvent & DataActionEvent) | null;
+}
+export interface DataConnectionEvent {
+  displayName: string;
+  channelId: string;
 }
 
 export interface DataMouseEvent {

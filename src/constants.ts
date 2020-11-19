@@ -6,11 +6,10 @@ export const GAME_SCREEN_HEIGHT = 720;
 export const GAME_CONFIG: IGameConfig = {
   isInteractive: false,
   innerWidth: window.innerWidth,
-  innerHeight: window.innerHeight
+  innerHeight: window.innerHeight,
 };
 
 export enum SceneKeys {
-  Load = 'Load',
   Menu = 'Menu',
   Pause = 'Pause',
   Map1 = 'Map1',
@@ -59,7 +58,7 @@ export const PLAYER_COLLECTION: IPlayer = {
   lastJumpedAt: 0,
   speed: {
     run: 2.5,
-    jump: 2.5
+    jump: 3.5
   }
 };
 

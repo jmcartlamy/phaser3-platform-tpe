@@ -13,7 +13,7 @@ import Enemy from '../objects/Enemy';
 import handleBallsCollision from '../objects/events/handleBallsCollision';
 import { Characters, SceneKeys } from '../constants';
 import handlePlayerCollision from '../objects/events/handlePlayerCollision';
-import { PhaserGame, SceneFactoryParams, DataActionEvent, DataMouseEvent } from '../types';
+import { PhaserGame, SceneFactoryParams, WebSocketMessageContextEmit } from '../types';
 import addBalls from '../helpers/phaser/addBalls';
 import translateCoordinatesToScreen from '../helpers/twitch/translateCoordinatesToScreen';
 import dispatchEnemyPosition from './helpers/dispatchEnemyPosition';
@@ -35,7 +35,7 @@ export default class SceneFactory extends Phaser.Scene {
     });
     this.blob = [];
     this.params = params;
-    this.handleMessage = this.handleMessage.bind(this);
+    this.handleWebSocketMessage = this.handleWebSocketMessage.bind(this);
   }
 
   public preload() {
@@ -69,27 +69,11 @@ export default class SceneFactory extends Phaser.Scene {
       bonus: 0,
       total: 0
     };
-    // TODO Update interactive scene
-    // this.game.interactive?.onGame(this);
-    const protocol = process.env.NODE_ENV === 'production' ? 'https:' : 'http:';
-    const host =
-      process.env.NODE_ENV === 'production'
-        ? '//interactive-sync-ebs.azurewebsites.net/'
-        : '//localhost:8081/';
-    const path = 'api/user/interface';
 
-    try {
-      axios({
-        method: 'POST',
-        url: protocol + host + path,
-        data: {
-          channelId: this.registry.get('channelId'),
-          userInterface: JSON.stringify(this.params.user.interface)
-        }
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    // Send user interface with websocket
+    this.game.socket?.send(
+      JSON.stringify({ context: 'user_interface', data: this.params.user.interface })
+    );
 
     // Create map following json loaded
     const tilemap = new TileMap(this, this.params.map.key);
@@ -176,32 +160,34 @@ export default class SceneFactory extends Phaser.Scene {
 
     if (this.game.socket) {
       // Add balls when we receive a message on action or mouse event from EBS
-      this.game.socket.addEventListener('message', this.handleMessage, true);
+      this.game.socket.addEventListener('message', this.handleWebSocketMessage, true);
     }
   }
 
-  handleMessage(event: { data: string }) {
-    const { type, payload }: DataActionEvent & DataMouseEvent = JSON.parse(event.data);
-
-    if (type === 'mouse') {
-      const { x, y } = translateCoordinatesToScreen(this, payload);
-      this.game.score.mouse += 2;
-      this.game.score.total += 2;
-      this.textScore.setText('Score: ' + this.game.score.total.toString());
-      addBalls(this, x, y);
-    }
-    if (type === 'action') {
-      const position = dispatchEnemyPosition(
-        this.params.position.enemy,
-        this.player.collection.body.position,
-        this.params.map.direction
-      );
-      this.game.score.action += 15;
-      this.game.score.total += 15;
-      this.textScore.setText('Score: ' + this.game.score.total.toString());
-      this.blob.push(
-        new Enemy(this, position.x, position.y, position.direction, payload.username, payload.id)
-      );
+  private handleWebSocketMessage(event: { data: string }) {
+    const body: WebSocketMessageContextEmit = JSON.parse(event.data);
+    if (body?.context === 'emit' && body?.data) {
+      const { type, payload } = body.data;
+      if (type === 'mouse') {
+        const { x, y } = translateCoordinatesToScreen(this, payload);
+        this.game.score.mouse += 2;
+        this.game.score.total += 2;
+        this.textScore.setText('Score: ' + this.game.score.total.toString());
+        addBalls(this, x, y);
+      }
+      if (type === 'action') {
+        const position = dispatchEnemyPosition(
+          this.params.position.enemy,
+          this.player.collection.body.position,
+          this.params.map.direction
+        );
+        this.game.score.action += 15;
+        this.game.score.total += 15;
+        this.textScore.setText('Score: ' + this.game.score.total.toString());
+        this.blob.push(
+          new Enemy(this, position.x, position.y, position.direction, payload.username, payload.id)
+        );
+      }
     }
   }
 

@@ -2,6 +2,7 @@ import settings from '../assets/sprites/settings.png';
 
 import { SceneKeys } from '../constants';
 import Enemy from '../objects/Enemy';
+import userInterface from './userInterface/MenuScene.json';
 
 export default class PauseScene extends Phaser.Scene {
   private backgroundSceneKey: string;
@@ -93,10 +94,7 @@ export default class PauseScene extends Phaser.Scene {
         this.scene.start(SceneKeys.Menu);
 
         const gameScene = this.scene.manager.getScene(this.backgroundSceneKey);
-        if (this.game.socket) {
-          this.game.socket.removeEventListener('message', gameScene.handleMessage, true);
-        }
-
+       
         if (gameScene.textTimer) {
           clearInterval(gameScene.textTimer);
         }

@@ -1,6 +1,5 @@
 import 'phaser';
 
-import LoadScene from './scenes/LoadScene';
 import MenuScene from './scenes/MenuScene';
 import PauseScene from './scenes/PauseScene';
 import Map1Scene from './scenes/Map1Scene';
@@ -27,19 +26,10 @@ const config = {
       }
     }
   },
-  scene: [LoadScene, MenuScene, Map1Scene, Map2Scene, Map3Scene, PauseScene]
+  scene: [MenuScene, Map1Scene, Map2Scene, Map3Scene, PauseScene]
 };
-
-class Game extends Phaser.Game {
-  constructor(config: Phaser.Types.Core.GameConfig) {
-    super(config);
-
-    // TODO use Oauth2 Code Authorization
-    // to create a new token or to retrieve an existing valid token with the extension
-  }
-}
 
 window.addEventListener('load', async () => {
   /* Launch the Phaser.Game instance */
-  new Game(config);
+  new Phaser.Game(config);
 });

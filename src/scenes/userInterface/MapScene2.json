@@ -35,7 +35,7 @@
           "name": "action-npc-1",
           "keyCode": "Digit1",
           "label": "Créer un ennemi",
-          "cooldown": 10000
+          "cooldown": 5000
         }
       ]
     }
@@ -51,7 +51,7 @@
         "name": "action-npc-1",
         "keyCode": "Digit1",
         "label": "Créer un ennemi",
-        "cooldown": 10000
+        "cooldown": 5000
       }
     ]
   }

@@ -4,6 +4,15 @@ A browser game connected with Twitch Api through an extension, using [Phaser3](h
 
 This repository is a Phaser3 game with ES6 & Typescript supports that includes hot-reloading for development and production-ready builds. 
 
+## Setting environment variables
+
+Create a `.env` file with this template:
+
+```
+EXT_CLIENT_ID=YOUR_CLIENT_ID
+EXT_CLIENT_SECRET=YOUR_CLIENT_SECRET
+```
+
 ## Available Commands
 
 | Command | Description |

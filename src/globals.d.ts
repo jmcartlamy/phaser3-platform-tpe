@@ -7,11 +7,8 @@ declare module 'jso';
 
 declare var process: {
   env: {
-    API_URI_AUTHORIZATION: string;
-    API_URI_TOKEN: string;
-    API_CLIENT_ID: string;
-    API_CLIENT_SECRET: string;
-    API_VERSION_ID: string;
+    EXT_CLIENT_ID: string;
+    EXT_CLIENT_SECRET: string;
     NODE_ENV: 'development' | 'production';
   };
 };
