@@ -1,87 +1,43 @@
-import { GameClient, IInputEvent, IScreenInput } from '@mixer/interactive-node';
-import translateCoordinatesToScreen from '../helpers/mixplay/translateCoordinatesToScreen';
-import addBalls from '../helpers/phaser/addBalls';
-import { SceneKeys, MixplayGroups, MixplayScenes } from '../constants';
+import UIMenuScene from '../scenes/userInterface/MenuScene.json';
 
 class Interactive {
-  private session: GameClient;
-  private readonly debugMode: boolean;
+  public status: 0 | 1 | 2 | 3;
+  public data: object;
+  public socket: WebSocket;
 
   constructor() {
-    this.session = new GameClient();
-    this.debugMode = false;
+    this.status = 0; // Initialization
+    this.data = {};
   }
 
-  public setup(token: string, callback: () => void): void {
-    this.session.open({
-      authToken: token,
-      versionId: +process.env.API_VERSION_ID
-    });
+  public setup(token: string, callback?: () => void): void {
+    const url =
+      process.env.NODE_ENV === 'production'
+        ? 'wss://interactive-sync-ebs.azurewebsites.net/'
+        : 'ws://localhost:8081/';
 
-    this.session.on('open', async () => {
-      await this.session.synchronizeState();
+    try {
+      this.socket = new WebSocket(url, [process.env.EXT_CLIENT_ID, token]);
+      this.status = 1; // Connected
+    } catch (err) {
+      this.status = 3; // Error
+      throw Error(err);
+    }
 
-      this.onDebug();
-      this.handleParticipant();
-
-      await this.session.ready(true);
-
-      callback();
-    });
-  }
-
-  public resume(): void {
-    this.updateSceneOnGroup(MixplayGroups.Default, MixplayScenes.Game);
-  }
-
-  public pause(): void {
-    this.updateSceneOnGroup(MixplayGroups.Default, MixplayScenes.Pause);
+    if (callback) callback();
   }
 
   public onMenu(): void {
-    this.updateSceneOnGroup(MixplayGroups.Default, MixplayScenes.Menu);
+    this.socket?.send(JSON.stringify({ context: 'user_interface', data: UIMenuScene }));
   }
 
-  public onGame(scene: Phaser.Scene): void {
-    this.updateSceneOnGroup(MixplayGroups.Default, MixplayScenes.Game);
-
-    this.onMouseDown(scene);
+  public onGame(userInterface: any): void {
+    this.socket?.send(JSON.stringify({ context: 'user_interface', data: userInterface }));
   }
 
-  private onDebug(): void {
-    if (this.debugMode) {
-      this.session.on('message', (err: any) => console.log('<<<', err));
-      this.session.on('send', (err: any) => console.log('>>>', err));
-      this.session.on('error', (err: any) => console.log(err));
-    }
-  }
-
-  private handleParticipant(): void {
-    this.session.state.on('participantJoin', participant => {
-      console.log(`${participant.username}(${participant.sessionID}) Joined`);
-    });
-    this.session.state.on('participantLeave', (participantSessionID: string, participant: any) => {
-      console.log(`${participant.username}(${participantSessionID}) Left`);
-    });
-  }
-
-  private onMouseDown(scene: Phaser.Scene): void {
-    const control = this.session.state.getControl('Drop balls');
-    control.removeAllListeners();
-
-    control.on('mousedown', (inputEvent: IInputEvent<IScreenInput>) => {
-      const { x, y } = translateCoordinatesToScreen(scene, inputEvent.input.x, inputEvent.input.y);
-      addBalls(scene, x, y);
-    });
-  }
-
-  private updateSceneOnGroup(groupID: string, sceneID: string): void {
-    const defaultGroup = this.session.state.getGroup(groupID);
-    defaultGroup.sceneID = sceneID;
-
-    this.session.updateGroups({
-      groups: [defaultGroup]
-    });
+  public onDisconnect(): void {
+    this.socket.close();
+    this.status = 2; // Disconnected
   }
 }
 

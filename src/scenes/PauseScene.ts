@@ -2,10 +2,11 @@ import settings from '../assets/sprites/settings.png';
 
 import { SceneKeys } from '../constants';
 import Enemy from '../objects/Enemy';
-import userInterface from './userInterface/MenuScene.json';
+import { PhaserGame } from '../types';
 
 export default class PauseScene extends Phaser.Scene {
   private backgroundSceneKey: string;
+  public game: PhaserGame;
 
   constructor() {
     super({
@@ -48,9 +49,8 @@ export default class PauseScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive();
 
-    const labelInteractive = this.registry.get('isInteractive')
-      ? 'Interactive game ✅'
-      : 'Solo game ⚠️';
+    const labelInteractive =
+      this.game.interactive.status === 1 ? 'Interactive game ✅' : 'Solo game ⚠️';
     this.add
       .text(innerWidth / 2, innerHeight / 2 + 44, labelInteractive, styles)
       .setPadding(48, 16, 48, 16)
@@ -94,7 +94,7 @@ export default class PauseScene extends Phaser.Scene {
         this.scene.start(SceneKeys.Menu);
 
         const gameScene = this.scene.manager.getScene(this.backgroundSceneKey);
-       
+
         if (gameScene.textTimer) {
           clearInterval(gameScene.textTimer);
         }

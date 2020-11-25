@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import balls from '../assets/sprites/balls.png';
 import settings from '../assets/sprites/settings.png';
 import player from '../assets/sprites/player.png';
@@ -71,9 +69,7 @@ export default class SceneFactory extends Phaser.Scene {
     };
 
     // Send user interface with websocket
-    this.game.socket?.send(
-      JSON.stringify({ context: 'user_interface', data: this.params.user.interface })
-    );
+    this.game.interactive?.onGame(this.params.user.interface);
 
     // Create map following json loaded
     const tilemap = new TileMap(this, this.params.map.key);
@@ -124,7 +120,6 @@ export default class SceneFactory extends Phaser.Scene {
       function() {
         this.scene.launch(SceneKeys.Pause, { backgroundSceneKey: this.params.key });
         this.scene.pause(this.params.key);
-        this.game.interactive?.pause();
       },
       this
     );
@@ -158,14 +153,15 @@ export default class SceneFactory extends Phaser.Scene {
       restartSceneWithDelay(this, 0);
     });
 
-    if (this.game.socket) {
+    if (this.game.interactive.status === 1) {
       // Add balls when we receive a message on action or mouse event from EBS
-      this.game.socket.addEventListener('message', this.handleWebSocketMessage, true);
+      this.game.interactive.socket.addEventListener('message', this.handleWebSocketMessage, true);
     }
   }
 
-  private handleWebSocketMessage(event: { data: string }) {
+  public handleWebSocketMessage(event: { data: string }) {
     const body: WebSocketMessageContextEmit = JSON.parse(event.data);
+    console.log(body);
     if (body?.context === 'emit' && body?.data) {
       const { type, payload } = body.data;
       if (type === 'mouse') {

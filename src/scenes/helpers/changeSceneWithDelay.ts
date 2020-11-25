@@ -19,9 +19,8 @@ export default function(currentScene: SceneFactory, nextScene: string, delay: nu
     currentScene.blob = [];
   }
 
-  // @ts-ignore -> type game is "PhaserGame" from './types.ts'
-  if (currentScene.game.socket) {
-    currentScene.game.socket.removeEventListener('message', currentScene.handleWebSocketMessage, true);
+  if (currentScene.game.interactive.status === 1) {
+    currentScene.game.interactive.socket.removeEventListener('message', currentScene.handleWebSocketMessage, true);
   }
 
   // Clear interval timer

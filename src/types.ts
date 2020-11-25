@@ -1,13 +1,10 @@
 import { SceneKeys } from './constants';
+import Interactive from './api/interactive';
 
 export interface PhaserGame extends Phaser.Game {
-  socket: WebSocketExtended;
   score: Score;
+  interactive: Interactive;
   // TODO interactive
-}
-
-export interface WebSocketExtended extends WebSocket {
-  messageConnectionListener?: (event: any) => void;
 }
 
 export interface SceneFactoryParams {
@@ -39,7 +36,6 @@ export interface Score {
 type KeysDirection = 'left' | 'right' | 'bottom';
 
 export interface IGameConfig {
-  isInteractive: boolean;
   innerWidth: number;
   innerHeight: number;
 }

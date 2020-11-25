@@ -4,7 +4,6 @@ export const GAME_SCREEN_WIDTH = 1280;
 export const GAME_SCREEN_HEIGHT = 720;
 
 export const GAME_CONFIG: IGameConfig = {
-  isInteractive: false,
   innerWidth: window.innerWidth,
   innerHeight: window.innerHeight,
 };
@@ -15,16 +14,6 @@ export enum SceneKeys {
   Map1 = 'Map1',
   Map2 = 'Map2',
   Map3 = 'Map3'
-}
-
-export enum MixplayGroups {
-  Default = 'default'
-}
-
-export enum MixplayScenes {
-  Menu = 'menu',
-  Game = 'game',
-  Pause = 'pause'
 }
 
 export enum Characters {
