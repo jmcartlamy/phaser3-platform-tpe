@@ -4,9 +4,19 @@ A browser game connected with Twitch Api through an extension, using [Phaser3](h
 
 This repository is a Phaser3 game with ES6 & Typescript supports that includes hot-reloading for development and production-ready builds. 
 
-## Setting environment variables
+## Connect with Twitch
 
-Create a `.env` file with this template:
+### Register your application
+
+Connect on [Twitch Developers](https://dev.twitch.tv/console) and register an application to use Twitch API.
+
+1. Set a name, the following OAuth redirect url `http://localhost:8080` and after the registration, you will get an **Client ID**. 
+2. Click to manage your application and create a new **Client Secret**
+3. Save your **Client ID / Secret** for the environment variables
+
+### Setting environment variables
+
+Create a `.env` file and put your Client ID / Secret with this template:
 
 ```
 EXT_CLIENT_ID=YOUR_CLIENT_ID
