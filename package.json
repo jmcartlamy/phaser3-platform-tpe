@@ -25,6 +25,7 @@
     "prettier": "^1.19.1",
     "raw-loader": "^1.0.0",
     "terser-webpack-plugin": "^1.2.1",
+    "tile-extruder": "^2.0.6",
     "typescript": "^3.7.3",
     "webpack": "^4.28.3",
     "webpack-cli": "^3.2.1",

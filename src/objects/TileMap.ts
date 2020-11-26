@@ -5,11 +5,11 @@ export default class TileMap {
     this.map = scene.make.tilemap({ key });
 
     // Map with collision
-    const tilesetImage = this.map.addTilesetImage('tileMaps');
+    const tilesetImage = this.map.addTilesetImage('tileMaps', 'tileMaps', 64, 64, 1, 2);
     const layer = this.map.createDynamicLayer(1, tilesetImage, 0, 0);
 
     // Map without collision
-    const tilesetImageNC = this.map.addTilesetImage('tileMapsNC');
+    const tilesetImageNC = this.map.addTilesetImage('tileMapsNC', 'tileMapsNC', 64, 64, 1, 2);
     this.map.createStaticLayer(0, tilesetImageNC, 0, 0);
 
     // Set colliding tiles before converting the layer to Matter bodies!

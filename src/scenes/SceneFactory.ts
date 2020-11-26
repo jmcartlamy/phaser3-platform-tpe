@@ -1,7 +1,7 @@
 import balls from '../assets/sprites/balls.png';
 import settings from '../assets/sprites/settings.png';
 import player from '../assets/sprites/player.png';
-import tileMaps from '../assets/tilemaps/kenny_platformer_64x64.png';
+import tileMaps from '../assets/tilemaps/kenny_platformer_64x64-extruded.png';
 
 import TileMap from '../objects/TileMap';
 import Player from '../objects/Player';
