@@ -1,21 +1,29 @@
 {
   "id": "2",
   "mobile": {
-    "title": "Intéractivité activé sur les boutons",
+    "title": {
+      "label": "Intéractivité activé sur les boutons"
+    },
     "components": [
       {
         "type": "button",
         "name": "action-npc-1",
         "label": "Créer un ennemi",
         "keyCode": "Digit1",
-        "cooldown": 5000
+        "cooldown": {
+          "duration": 3000,
+          "broadcast": true
+        }
       },
       {
         "type": "button",
         "name": "action-npc-2",
         "label": "Créer un super ennemi",
         "keyCode": "Digit2",
-        "cooldown": 30000
+        "cooldown": {
+          "duration": 30000,
+          "broadcast": true
+        }
       }
     ]
   },
@@ -35,14 +43,20 @@
           "name": "action-npc-1",
           "label": "Créer un ennemi",
           "keyCode": "Digit1",
-          "cooldown": 5000
+          "cooldown": {
+            "duration": 5000,
+            "broadcast": true
+          }
         },
         {
           "type": "button",
           "name": "action-npc-2",
           "label": "Créer un super ennemi",
           "keyCode": "Digit2",
-          "cooldown": 30000
+          "cooldown": {
+            "duration": 30000,
+            "broadcast": true
+          }
         }
       ]
     }
@@ -58,14 +72,20 @@
         "name": "action-npc-1",
         "label": "Créer un ennemi",
         "keyCode": "Digit1",
-        "cooldown": 5000
+        "cooldown": {
+          "duration": 5000,
+          "broadcast": true
+        }
       },
       {
         "type": "button",
         "name": "action-npc-2",
         "label": "Créer un autre ennemi",
         "keyCode": "Digit2",
-        "cooldown": 30000
+        "cooldown": {
+          "duration": 30000,
+          "broadcast": true
+        }
       }
     ]
   }
