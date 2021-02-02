@@ -161,17 +161,16 @@ export default class SceneFactory extends Phaser.Scene {
 
   public handleWebSocketMessage(event: { data: string }) {
     const body: WebSocketMessageContextEmit = JSON.parse(event.data);
-    console.log(body);
     if (body?.context === 'emit' && body?.data) {
       const { type, payload } = body.data;
-      if (type === 'mouse') {
+      if (type === 'mouseup' || type === 'mousedown') {
         const { x, y } = translateCoordinatesToScreen(this, payload);
         this.game.score.mouse += 2;
         this.game.score.total += 2;
         this.textScore.setText('Score: ' + this.game.score.total.toString());
         addBalls(this, x, y);
       }
-      if (type === 'action') {
+      if (type === 'input') {
         const position = dispatchEnemyPosition(
           this.params.position.enemy,
           this.player.collection.body.position,
