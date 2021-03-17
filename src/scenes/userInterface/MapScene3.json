@@ -9,20 +9,18 @@
         "type": "button",
         "name": "action-npc-1",
         "label": "Créer un ennemi",
-        "keyCode": "Digit1",
         "cooldown": {
-          "duration": 8000,
-          "broadcast": true
+          "duration": 10000,
+          "broadcast": false
         }
       },
       {
         "type": "button",
         "name": "action-npc-2",
         "label": "Créer un super ennemi",
-        "keyCode": "Digit2",
         "cooldown": {
           "duration": 30000,
-          "broadcast": true
+          "broadcast": false
         }
       }
     ]
@@ -41,7 +39,7 @@
       "components": [
         {
           "type": "title",
-          "label": "Intéractivité activée sur le stream et le bouton"
+          "label": "Intéractivité activée sur l'overlay et le bouton"
         }
       ]
     },
@@ -51,20 +49,18 @@
           "type": "button",
           "name": "action-npc-1",
           "label": "Créer un ennemi",
-          "keyCode": "Digit1",
           "cooldown": {
             "duration": 8000,
-            "broadcast": true
+            "broadcast": false
           }
         },
         {
           "type": "button",
           "name": "action-npc-2",
           "label": "Créer un super ennemi",
-          "keyCode": "Digit2",
           "cooldown": {
             "duration": 30000,
-            "broadcast": true
+            "broadcast": false
           }
         }
       ]
@@ -80,20 +76,18 @@
         "type": "button",
         "name": "action-npc-1",
         "label": "Créer un ennemi",
-        "keyCode": "Digit1",
         "cooldown": {
           "duration": 8000,
-          "broadcast": true
+          "broadcast": false
         }
       },
       {
         "type": "button",
         "name": "action-npc-2",
         "label": "Créer un super ennemi",
-        "keyCode": "Digit2",
         "cooldown": {
           "duration": 30000,
-          "broadcast": true
+          "broadcast": false
         }
       }
     ]

@@ -9,9 +9,8 @@
         "type": "button",
         "name": "action-npc-1",
         "label": "Créer un ennemi",
-        "keyCode": "Digit1",
         "cooldown": {
-          "duration": 5000,
+          "duration": 8000,
           "broadcast": true
         }
       }
@@ -31,7 +30,7 @@
       "components": [
         {
           "type": "title",
-          "label": "Intéractivité activée sur le stream et le bouton"
+          "label": "Intéractivité activée sur l'overlay et le bouton"
         }
       ]
     },
@@ -40,10 +39,9 @@
         {
           "type": "button",
           "name": "action-npc-1",
-          "keyCode": "Digit1",
           "label": "Créer un ennemi",
           "cooldown": {
-            "duration": 5000,
+            "duration": 8000,
             "broadcast": true
           }
         }
@@ -59,10 +57,9 @@
       {
         "type": "button",
         "name": "action-npc-1",
-        "keyCode": "Digit1",
         "label": "Créer un ennemi",
         "cooldown": {
-          "duration": 5000,
+          "duration": 8000,
           "broadcast": true
         }
       }
